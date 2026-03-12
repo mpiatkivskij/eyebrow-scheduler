@@ -1,0 +1,152 @@
+{
+  "nav": {
+    "home": "Home",
+    "portfolio": "Portfolio",
+    "booking": "Book Now",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Reveal Your Natural Beauty",
+    "subtitle": "Premium eyebrow, eyelash & facial treatments crafted with precision and care",
+    "cta": "Book Appointment",
+    "explore": "View Portfolio"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Expertly crafted beauty treatments for brows, eyelashes, and face",
+    "duration": "{{minutes}} min",
+    "bookNow": "Book Now",
+    "categories": {
+      "all": "All",
+      "brows": "Brows",
+      "eyelids": "Eyelids",
+      "face": "Face"
+    }
+  },
+  "portfolio": {
+    "title": "Our Portfolio",
+    "subtitle": "See the artistry behind every treatment"
+  },
+  "booking": {
+    "title": "Book Your Appointment",
+    "subtitle": "Just a few steps to your beauty session",
+    "steps": {
+      "service": "Select Service",
+      "datetime": "Date & Time",
+      "details": "Your Details",
+      "confirmation": "Confirmation"
+    },
+    "selectService": "Choose your treatment",
+    "selectDate": "Pick a date",
+    "selectTime": "Choose a time slot",
+    "noSlots": "No available slots for this date",
+    "closedDay": "Salon is closed on this day",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "email": "Email (optional)",
+    "notes": "Additional notes (optional)",
+    "submit": "Confirm Booking",
+    "back": "Back",
+    "next": "Next",
+    "success": {
+      "title": "Booking Confirmed!",
+      "message": "Thank you, {{name}}! Your appointment has been scheduled.",
+      "details": "We'll see you on {{date}} at {{time}}.",
+      "home": "Back to Home"
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "address": "Kyiv, Ukraine",
+    "tagline": "Beauty is an art. We are the artists."
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "error": "Invalid credentials"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "services": "Services",
+      "appointments": "Appointments",
+      "schedule": "Schedule",
+      "gallery": "Gallery",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "todayAppointments": "Today",
+      "weekAppointments": "This Week",
+      "monthAppointments": "This Month",
+      "weekRevenue": "Week Revenue",
+      "monthRevenue": "Month Revenue",
+      "upcoming": "Upcoming Appointments",
+      "pending": "Pending",
+      "totalServices": "Services"
+    },
+    "services": {
+      "title": "Manage Services",
+      "add": "Add Service",
+      "edit": "Edit Service",
+      "delete": "Delete",
+      "nameEn": "Name (English)",
+      "nameUk": "Name (Ukrainian)",
+      "descEn": "Description (English)",
+      "descUk": "Description (Ukrainian)",
+      "price": "Price",
+      "duration": "Duration (min)",
+      "category": "Category",
+      "active": "Active",
+      "save": "Save",
+      "cancel": "Cancel"
+    },
+    "appointments": {
+      "title": "Appointments",
+      "client": "Client",
+      "phone": "Phone",
+      "service": "Service",
+      "date": "Date",
+      "time": "Time",
+      "status": "Status",
+      "actions": "Actions",
+      "statuses": {
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "cancelled": "Cancelled",
+        "completed": "Completed"
+      }
+    },
+    "schedule": {
+      "title": "Work Schedule",
+      "dayOff": "Day Off",
+      "startTime": "Start",
+      "endTime": "End",
+      "breaks": "Breaks",
+      "addBreak": "Add Break",
+      "save": "Save Schedule",
+      "days": {
+        "0": "Sunday",
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday"
+      }
+    },
+    "gallery": {
+      "title": "Gallery Management",
+      "add": "Add Image",
+      "imageUrl": "Image URL",
+      "descEn": "Description (English)",
+      "descUk": "Description (Ukrainian)",
+      "category": "Category",
+      "sortOrder": "Sort Order",
+      "save": "Save",
+      "delete": "Delete"
+    }
+  }
+}

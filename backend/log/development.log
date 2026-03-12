@@ -1,0 +1,1719 @@
+  [1m[35m (103.1ms)[0m  [1m[35mCREATE DATABASE "backend_development" ENCODING = 'unicode' /*application='Backend'*/[0m
+  [1m[35m (102.5ms)[0m  [1m[35mCREATE DATABASE "backend_development" ENCODING = 'unicode' /*application='Backend'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Backend'*/[0m
+  [1m[35m (137.2ms)[0m  [1m[35mCREATE DATABASE "backend_development" ENCODING = 'unicode' /*application='Backend'*/[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mSET search_path TO public /*application='Backend'*/[0m
+  [1m[35m (47.4ms)[0m  [1m[35mCREATE DATABASE "backend_test" ENCODING = 'unicode' /*application='Backend'*/[0m
+  [1m[35m (2.3ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY) /*application='Backend'*/[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5073945470573576205) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = 'environment' ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.9ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2026-03-11 21:39:07.175455', '2026-03-11 21:39:07.175457') RETURNING "key" /*application='Backend'*/[0m
+Migrating to CreateAdminUsers (20260311213346)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (2.4ms)[0m  [1m[35mCREATE TABLE "admin_users" ("id" bigserial primary key, "email" character varying NOT NULL, "password_digest" character varying NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_admin_users_on_email" ON "admin_users" ("email") /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213346') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+Migrating to CreateServices (20260311213356)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE "services" ("id" bigserial primary key, "name_uk" character varying NOT NULL, "name_en" character varying NOT NULL, "description_uk" text, "description_en" text, "price" decimal(8,2) NOT NULL, "duration_minutes" integer NOT NULL, "category" character varying, "active" boolean DEFAULT TRUE NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213356') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+Migrating to CreateAppointments (20260311213357)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (2.6ms)[0m  [1m[35mCREATE TABLE "appointments" ("id" bigserial primary key, "client_name" character varying NOT NULL, "client_phone" character varying NOT NULL, "client_email" character varying, "service_id" bigint NOT NULL, "start_time" timestamp(6) NOT NULL, "end_time" timestamp(6) NOT NULL, "status" integer DEFAULT 0 NOT NULL, "language_used" character varying DEFAULT 'en', "notes" text, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_486091c262"
+FOREIGN KEY ("service_id")
+  REFERENCES "services" ("id")
+) /*application='Backend'*/[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE INDEX "index_appointments_on_service_id" ON "appointments" ("service_id") /*application='Backend'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_appointments_on_start_time" ON "appointments" ("start_time") /*application='Backend'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_appointments_on_status" ON "appointments" ("status") /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213357') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+Migrating to CreateGalleryItems (20260311213358)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "gallery_items" ("id" bigserial primary key, "image_url" character varying, "description_uk" character varying, "description_en" character varying, "sort_order" integer, "category" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213358') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+Migrating to CreateWorkSchedules (20260311213359)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (0.8ms)[0m  [1m[35mCREATE TABLE "work_schedules" ("id" bigserial primary key, "day_of_week" integer NOT NULL, "start_time" time, "end_time" time, "is_day_off" boolean DEFAULT FALSE NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_work_schedules_on_day_of_week" ON "work_schedules" ("day_of_week") /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213359') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+Migrating to CreateScheduleBreaks (20260311213360)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (4.9ms)[0m  [1m[35mCREATE TABLE "schedule_breaks" ("id" bigserial primary key, "work_schedule_id" bigint NOT NULL, "start_time" time NOT NULL, "end_time" time NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_c9ca9609c3"
+FOREIGN KEY ("work_schedule_id")
+  REFERENCES "work_schedules" ("id")
+) /*application='Backend'*/[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE INDEX "index_schedule_breaks_on_work_schedule_id" ON "schedule_breaks" ("work_schedule_id") /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213360') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+Migrating to CreateHolidays (20260311213361)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE TABLE "holidays" ("id" bigserial primary key, "date" date, "description" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20260311213361') RETURNING "version" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_advisory_unlock(5073945470573576205) /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+  [1m[36mAdminUser Load (0.2ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."email" = 'admin@beautysalon.com' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mAdminUser Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "admin_users" WHERE "admin_users"."email" = 'admin@beautysalon.com' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mAdminUser Create (1.0ms)[0m  [1m[32mINSERT INTO "admin_users" ("email", "password_digest", "created_at", "updated_at") VALUES ('admin@beautysalon.com', '$2a$12$54XccN9nss499Mhi.hx1fu2z0nFKASbcSGGStC3Mob1TFIEeQNdC6', '2026-03-11 21:39:07.523628', '2026-03-11 21:39:07.523628') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Eyebrow Shaping' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (1.0ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Корекція брів', 'Eyebrow Shaping', 'Професійна корекція та дизайн брів, що підкреслюють риси обличчя.', 'Professional eyebrow shaping and design to complement your facial features.', 35.0, 45, 'brows', TRUE, '2026-03-11 21:39:07.541366', '2026-03-11 21:39:07.541366') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Eyebrow Lamination' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (1.5ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Ламінування брів', 'Eyebrow Lamination', 'Довготривале ламінування брів для більш повного та виразного вигляду.', 'Long-lasting eyebrow lamination for a fuller, more defined look.', 55.0, 60, 'brows', TRUE, '2026-03-11 21:39:07.545790', '2026-03-11 21:39:07.545790') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Eyebrow Tinting' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (0.9ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Фарбування брів', 'Eyebrow Tinting', 'Напівперманентне фарбування брів для природного підсилення кольору.', 'Semi-permanent eyebrow tinting for natural-looking color enhancement.', 25.0, 30, 'brows', TRUE, '2026-03-11 21:39:07.550033', '2026-03-11 21:39:07.550033') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Eyelash Lift & Tint' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (0.9ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Ліфтинг та фарбування вій', 'Eyelash Lift & Tint', 'Приголомшливий ліфтинг вій з фарбуванням для виразного та ефектного погляду.', 'Stunning eyelash lift with tinting for a wide-eyed, dramatic look.', 65.0, 75, 'eyelids', TRUE, '2026-03-11 21:39:07.556887', '2026-03-11 21:39:07.556887') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Classic Eyelash Extensions' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (1.0ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Класичне нарощування вій', 'Classic Eyelash Extensions', 'Класичне нарощування вій з природним виглядом для щоденної елегантності.', 'Natural-looking classic eyelash extensions for everyday elegance.', 90.0, 120, 'eyelids', TRUE, '2026-03-11 21:39:07.560648', '2026-03-11 21:39:07.560648') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Facial Cleansing' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (0.9ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Чищення обличчя', 'Facial Cleansing', 'Глибоке чищення обличчя для сяючої та здорової шкіри.', 'Deep facial cleansing treatment for radiant, glowing skin.', 75.0, 60, 'face', TRUE, '2026-03-11 21:39:07.564807', '2026-03-11 21:39:07.564807') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Anti-Aging Facial' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (0.8ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Омолоджуючий догляд', 'Anti-Aging Facial', 'Преміальний омолоджуючий догляд з колагеном та гіалуроновою кислотою.', 'Premium anti-aging facial treatment with collagen and hyaluronic acid.', 120.0, 90, 'face', TRUE, '2026-03-11 21:39:07.568047', '2026-03-11 21:39:07.568047') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."name_en" = 'Hydrating Face Mask' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mService Create (1.1ms)[0m  [1m[32mINSERT INTO "services" ("name_uk", "name_en", "description_uk", "description_en", "price", "duration_minutes", "category", "active", "created_at", "updated_at") VALUES ('Зволожуюча маска для обличчя', 'Hydrating Face Mask', 'Інтенсивна зволожуюча маска для сухої та чутливої шкіри.', 'Intensive hydration mask for dry and sensitive skin.', 45.0, 45, 'face', TRUE, '2026-03-11 21:39:07.571829', '2026-03-11 21:39:07.571829') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mService Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" /*application='Backend'*/[0m
+  [1m[36mGalleryItem Load (0.9ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" WHERE "gallery_items"."image_url" = 'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600' ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mGalleryItem Create (0.5ms)[0m  [1m[32mINSERT INTO "gallery_items" ("image_url", "description_uk", "description_en", "sort_order", "category", "created_at", "updated_at") VALUES ('https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600', 'Ідеальна форма брів', 'Perfect eyebrow shaping', 1, 'brows', '2026-03-11 21:39:07.585852', '2026-03-11 21:39:07.585852') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mGalleryItem Load (0.4ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" WHERE "gallery_items"."image_url" = 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600' ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mGalleryItem Create (1.3ms)[0m  [1m[32mINSERT INTO "gallery_items" ("image_url", "description_uk", "description_en", "sort_order", "category", "created_at", "updated_at") VALUES ('https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600', 'Природний вигляд краси', 'Natural beauty look', 2, 'face', '2026-03-11 21:39:07.589709', '2026-03-11 21:39:07.589709') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mGalleryItem Load (0.3ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" WHERE "gallery_items"."image_url" = 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600' ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mGalleryItem Create (2.1ms)[0m  [1m[32mINSERT INTO "gallery_items" ("image_url", "description_uk", "description_en", "sort_order", "category", "created_at", "updated_at") VALUES ('https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=600', 'Приголомшливе нарощування вій', 'Stunning eyelash extensions', 3, 'eyelids', '2026-03-11 21:39:07.594937', '2026-03-11 21:39:07.594937') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mGalleryItem Load (0.3ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" WHERE "gallery_items"."image_url" = 'https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600' ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mGalleryItem Create (14.9ms)[0m  [1m[32mINSERT INTO "gallery_items" ("image_url", "description_uk", "description_en", "sort_order", "category", "created_at", "updated_at") VALUES ('https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=600', 'Результати догляду за обличчям', 'Facial treatment results', 4, 'face', '2026-03-11 21:39:07.603588', '2026-03-11 21:39:07.603588') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mGalleryItem Load (0.5ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" WHERE "gallery_items"."image_url" = 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600' ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mGalleryItem Create (1.4ms)[0m  [1m[32mINSERT INTO "gallery_items" ("image_url", "description_uk", "description_en", "sort_order", "category", "created_at", "updated_at") VALUES ('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600', 'Результат ламінування брів', 'Eyebrow lamination result', 5, 'brows', '2026-03-11 21:39:07.621809', '2026-03-11 21:39:07.621809') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mGalleryItem Load (0.2ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" WHERE "gallery_items"."image_url" = 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600' ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mGalleryItem Create (0.8ms)[0m  [1m[32mINSERT INTO "gallery_items" ("image_url", "description_uk", "description_en", "sort_order", "category", "created_at", "updated_at") VALUES ('https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=600', 'Сяюча шкіра після процедури', 'Glowing skin after facial', 6, 'face', '2026-03-11 21:39:07.625628', '2026-03-11 21:39:07.625628') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mGalleryItem Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "gallery_items" /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.5ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (0.9ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (0, NULL, NULL, TRUE, '2026-03-11 21:39:07.641236', '2026-03-11 21:39:07.641236') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 1 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 1 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (1.1ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (1, '09:00:00', '18:00:00', FALSE, '2026-03-11 21:39:07.648329', '2026-03-11 21:39:07.648329') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 2 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 2 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (0.4ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (2, '09:00:00', '18:00:00', FALSE, '2026-03-11 21:39:07.654298', '2026-03-11 21:39:07.654298') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 3 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 3 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (0.2ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (3, '09:00:00', '18:00:00', FALSE, '2026-03-11 21:39:07.659433', '2026-03-11 21:39:07.659433') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (0.4ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (4, '09:00:00', '18:00:00', FALSE, '2026-03-11 21:39:07.665213', '2026-03-11 21:39:07.665213') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (0.3ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (5, '09:00:00', '18:00:00', FALSE, '2026-03-11 21:39:07.670361', '2026-03-11 21:39:07.670361') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Exists? (1.2ms)[0m  [1m[34mSELECT 1 AS one FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Create (0.2ms)[0m  [1m[32mINSERT INTO "work_schedules" ("day_of_week", "start_time", "end_time", "is_day_off", "created_at", "updated_at") VALUES (6, '09:00:00', '18:00:00', FALSE, '2026-03-11 21:39:07.674978', '2026-03-11 21:39:07.674978') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."is_day_off" = FALSE /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Load (1.3ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 2 AND "schedule_breaks"."start_time" = '13:00:00' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Create (5.0ms)[0m  [1m[32mINSERT INTO "schedule_breaks" ("work_schedule_id", "start_time", "end_time", "created_at", "updated_at") VALUES (2, '13:00:00', '14:00:00', '2026-03-11 21:39:07.704332', '2026-03-11 21:39:07.704332') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Load (0.3ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 3 AND "schedule_breaks"."start_time" = '13:00:00' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Create (1.4ms)[0m  [1m[32mINSERT INTO "schedule_breaks" ("work_schedule_id", "start_time", "end_time", "created_at", "updated_at") VALUES (3, '13:00:00', '14:00:00', '2026-03-11 21:39:07.712902', '2026-03-11 21:39:07.712902') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Load (0.2ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 4 AND "schedule_breaks"."start_time" = '13:00:00' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Create (1.0ms)[0m  [1m[32mINSERT INTO "schedule_breaks" ("work_schedule_id", "start_time", "end_time", "created_at", "updated_at") VALUES (4, '13:00:00', '14:00:00', '2026-03-11 21:39:07.716969', '2026-03-11 21:39:07.716969') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Load (0.3ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 AND "schedule_breaks"."start_time" = '13:00:00' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Create (1.6ms)[0m  [1m[32mINSERT INTO "schedule_breaks" ("work_schedule_id", "start_time", "end_time", "created_at", "updated_at") VALUES (5, '13:00:00', '14:00:00', '2026-03-11 21:39:07.720900', '2026-03-11 21:39:07.720900') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Load (0.3ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 AND "schedule_breaks"."start_time" = '13:00:00' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Create (0.9ms)[0m  [1m[32mINSERT INTO "schedule_breaks" ("work_schedule_id", "start_time", "end_time", "created_at", "updated_at") VALUES (6, '13:00:00', '14:00:00', '2026-03-11 21:39:07.725224', '2026-03-11 21:39:07.725224') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Load (0.7ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 AND "schedule_breaks"."start_time" = '13:00:00' LIMIT 1 /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*application='Backend'*/[0m
+  [1m[36mScheduleBreak Create (1.1ms)[0m  [1m[32mINSERT INTO "schedule_breaks" ("work_schedule_id", "start_time", "end_time", "created_at", "updated_at") VALUES (7, '13:00:00', '14:00:00', '2026-03-11 21:39:07.731636', '2026-03-11 21:39:07.731636') RETURNING "id" /*application='Backend'*/[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mCOMMIT /*application='Backend'*/[0m
+  [1m[36mAdminUser Load (45.2ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" /* loading for pp */ LIMIT 11 /*application='Backend'*/[0m
+Started POST "/api/v1/admin/auth/login" for ::1 at 2026-03-11 23:59:14 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+Processing by Api::V1::Admin::AuthController#login as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "auth"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mAdminUser Load (2.2ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."email" = 'admin@beautysalon.com' LIMIT 1 /*action='login',application='Backend',controller='auth'*/[0m
+  ↳ app/controllers/api/v1/admin/auth_controller.rb:6:in `login'
+Completed 200 OK in 407ms (Views: 0.2ms | ActiveRecord: 36.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/dashboard" for ::1 at 2026-03-11 23:59:14 +0200
+Processing by Api::V1::Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (0.7ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Count (4.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-11 00:00:00' AND '2026-03-11 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:28:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:29:in `index'
+  [1m[36mAppointment Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:30:in `index'
+  [1m[36mAppointment Sum (4.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:31:in `index'
+  [1m[36mAppointment Sum (0.6ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:32:in `index'
+  [1m[36mAppointment Load (0.9ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE (start_time > '2026-03-11 21:59:14.608672') AND "appointments"."status" != 2 ORDER BY "appointments"."start_time" ASC LIMIT 10 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:34:in `index'
+  [1m[36mAppointment Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."status" = 0 AND (start_time > '2026-03-11 21:59:14.643286') /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:35:in `index'
+Completed 200 OK in 45ms (Views: 0.2ms | ActiveRecord: 23.0ms (9 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/dashboard" for ::1 at 2026-03-11 23:59:14 +0200
+Processing by Api::V1::Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (0.4ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-11 00:00:00' AND '2026-03-11 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:28:in `index'
+  [1m[36mAppointment Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:29:in `index'
+  [1m[36mAppointment Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:30:in `index'
+  [1m[36mAppointment Sum (0.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:31:in `index'
+  [1m[36mAppointment Sum (0.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:32:in `index'
+  [1m[36mAppointment Load (0.2ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE (start_time > '2026-03-11 21:59:14.648641') AND "appointments"."status" != 2 ORDER BY "appointments"."start_time" ASC LIMIT 10 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:34:in `index'
+  [1m[36mAppointment Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."status" = 0 AND (start_time > '2026-03-11 21:59:14.653998') /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:35:in `index'
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 2.5ms (9 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-11 23:59:18 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 8ms (Views: 5.7ms | ActiveRecord: 1.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-11 23:59:18 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.4ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 10ms (Views: 1.3ms | ActiveRecord: 0.9ms (2 queries, 0 cached) | GC: 6.8ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-11 23:59:34 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.7ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.5ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 3ms (Views: 0.7ms | ActiveRecord: 1.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-11 23:59:34 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.3ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 3ms (Views: 0.5ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/admin/work_schedules" for ::1 at 2026-03-11 23:59:36 +0200
+Processing by Api::V1::Admin::WorkSchedulesController#index as HTML
+  [1m[36mAdminUser Load (0.7ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mWorkSchedule Load (1.6ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" ORDER BY "work_schedules"."day_of_week" ASC /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+  [1m[36mScheduleBreak Load (1.5ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" IN (1, 2, 3, 4, 5, 6, 7) /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+Completed 200 OK in 39ms (Views: 0.1ms | ActiveRecord: 15.1ms (3 queries, 0 cached) | GC: 1.5ms)
+
+
+Started GET "/api/v1/admin/work_schedules" for ::1 at 2026-03-11 23:59:36 +0200
+Processing by Api::V1::Admin::WorkSchedulesController#index as HTML
+  [1m[36mAdminUser Load (0.3ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" ORDER BY "work_schedules"."day_of_week" ASC /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+  [1m[36mScheduleBreak Load (0.2ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" IN (1, 2, 3, 4, 5, 6, 7) /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 0.7ms (3 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/gallery_items" for ::1 at 2026-03-11 23:59:39 +0200
+Processing by Api::V1::GalleryItemsController#index as HTML
+  [1m[36mGalleryItem Load (0.5ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC /*action='index',application='Backend',controller='gallery_items'*/[0m
+  ↳ app/controllers/api/v1/gallery_items_controller.rb:6:in `index'
+Completed 200 OK in 12ms (Views: 4.9ms | ActiveRecord: 3.8ms (1 query, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/api/v1/gallery_items" for ::1 at 2026-03-11 23:59:39 +0200
+Processing by Api::V1::GalleryItemsController#index as HTML
+  [1m[36mGalleryItem Load (0.5ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC /*action='index',application='Backend',controller='gallery_items'*/[0m
+  ↳ app/controllers/api/v1/gallery_items_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-11 23:59:53 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-11 23:59:53 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-11 23:59:59 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-11 23:59:59 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-13" for ::1 at 2026-03-12 00:00:40 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (2.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.8ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 15ms (Views: 0.1ms | ActiveRecord: 5.7ms (5 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-14" for ::1 at 2026-03-12 00:00:43 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-14"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-14' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-14 00:00:00' AND start_time < '2026-03-14 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 14ms (Views: 0.1ms | ActiveRecord: 1.9ms (5 queries, 0 cached) | GC: 3.1ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-15" for ::1 at 2026-03-12 00:00:49 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.9ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.1ms (2 queries, 0 cached) | GC: 2.1ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:00:53 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 28ms (Views: 0.1ms | ActiveRecord: 2.0ms (5 queries, 0 cached) | GC: 19.8ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-26" for ::1 at 2026-03-12 00:01:21 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-26"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-26' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.3ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-26 00:00:00' AND start_time < '2026-03-26 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 1.4ms (5 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:01:47 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 5ms (Views: 3.8ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:01:47 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.4ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:17 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:17 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:38 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.7ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:38 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.2ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:45 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.1ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:45 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 1.9ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:52 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:02:52 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 1.9ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:03:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:03:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:03:49 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.1ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:03:49 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:02 +0200
+  [1m[36mActiveRecord::SchemaMigration Load (1.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC /*application='Backend'*/[0m
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 72ms (Views: 7.5ms | ActiveRecord: 24.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:02 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:02 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:06 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 5ms (Views: 3.6ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:06 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:16:09 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (1.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (1.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (1.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (3.1ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (1.1ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 50ms (Views: 0.2ms | ActiveRecord: 22.2ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=2&date=2026-03-12" for ::1 at 2026-03-12 00:16:09 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"2", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 2 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.8ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=5&date=2026-03-12" for ::1 at 2026-03-12 00:16:12 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"5", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.3ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 1.5ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=5&date=2026-03-15" for ::1 at 2026-03-12 00:16:20 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"5", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=5&date=2026-03-14" for ::1 at 2026-03-12 00:16:21 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"5", "date"=>"2026-03-14"}
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-14' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.5ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-14 00:00:00' AND start_time < '2026-03-14 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 10ms (Views: 0.2ms | ActiveRecord: 2.1ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/gallery_items" for ::1 at 2026-03-12 00:16:29 +0200
+Processing by Api::V1::GalleryItemsController#index as HTML
+  [1m[36mGalleryItem Load (1.6ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC /*action='index',application='Backend',controller='gallery_items'*/[0m
+  ↳ app/controllers/api/v1/gallery_items_controller.rb:6:in `index'
+Completed 200 OK in 16ms (Views: 4.3ms | ActiveRecord: 9.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/gallery_items" for ::1 at 2026-03-12 00:16:29 +0200
+Processing by Api::V1::GalleryItemsController#index as HTML
+  [1m[36mGalleryItem Load (0.6ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC /*action='index',application='Backend',controller='gallery_items'*/[0m
+  ↳ app/controllers/api/v1/gallery_items_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:32 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 17ms (Views: 16.0ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 12.9ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:32 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.5ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:41 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:16:41 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:16:42 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 1.7ms (5 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:17:16 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.9ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 5ms (Views: 3.2ms | ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:17:16 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:17:31 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.1ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:17:31 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/api/v1/available_slots?service_id=2&date=2026-03-12" for ::1 at 2026-03-12 00:17:32 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"2", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 2 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.5ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 12ms (Views: 0.2ms | ActiveRecord: 2.0ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/available_slots?service_id=4&date=2026-03-12" for ::1 at 2026-03-12 00:17:33 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"4", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.3ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 10ms (Views: 0.1ms | ActiveRecord: 1.6ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-12" for ::1 at 2026-03-12 00:17:35 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 11ms (Views: 0.2ms | ActiveRecord: 1.7ms (5 queries, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-13" for ::1 at 2026-03-12 00:17:43 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.5ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.6ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.6ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 14ms (Views: 0.2ms | ActiveRecord: 2.8ms (5 queries, 0 cached) | GC: 1.2ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-12" for ::1 at 2026-03-12 00:17:45 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.6ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.7ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 12ms (Views: 0.2ms | ActiveRecord: 2.5ms (5 queries, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-14" for ::1 at 2026-03-12 00:17:45 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-14"}
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (1.0ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-14' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-14 00:00:00' AND start_time < '2026-03-14 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (1.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 3.3ms (5 queries, 0 cached) | GC: 1.4ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-15" for ::1 at 2026-03-12 00:17:46 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-16" for ::1 at 2026-03-12 00:17:47 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-16"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-16' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-16 00:00:00' AND start_time < '2026-03-16 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 2 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 13ms (Views: 0.8ms | ActiveRecord: 1.9ms (5 queries, 0 cached) | GC: 3.8ms)
+
+
+Started GET "/api/v1/available_slots?service_id=6&date=2026-03-13" for ::1 at 2026-03-12 00:17:50 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"6", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.6ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 36ms (Views: 0.1ms | ActiveRecord: 2.0ms (5 queries, 0 cached) | GC: 26.9ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:18:01 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:18:01 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.5ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:18:03 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.6ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.8ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/available_slots?service_id=4&date=2026-03-12" for ::1 at 2026-03-12 00:18:04 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"4", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.9ms (5 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/available_slots?service_id=4&date=2026-03-15" for ::1 at 2026-03-12 00:18:08 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"4", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.0ms (2 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/available_slots?service_id=4&date=2026-03-13" for ::1 at 2026-03-12 00:18:12 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"4", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.9ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 8ms (Views: 0.1ms | ActiveRecord: 2.2ms (5 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:18:29 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.7ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:18:29 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:19:53 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (2.0ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 8ms (Views: 4.5ms | ActiveRecord: 1.9ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:19:53 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 1.9ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:20:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.2ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:20:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:20:13 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (1.0ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.6ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.7ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 2.9ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-12" for ::1 at 2026-03-12 00:20:15 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.7ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.7ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 11ms (Views: 0.2ms | ActiveRecord: 2.8ms (5 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-13" for ::1 at 2026-03-12 00:20:21 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 1.7ms (5 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-14" for ::1 at 2026-03-12 00:20:22 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-14"}
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-14' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.6ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-14 00:00:00' AND start_time < '2026-03-14 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 1.9ms (5 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-15" for ::1 at 2026-03-12 00:20:22 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 3ms (Views: 0.1ms | ActiveRecord: 0.7ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-12" for ::1 at 2026-03-12 00:20:23 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (1.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.5ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 11ms (Views: 0.1ms | ActiveRecord: 2.9ms (5 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:21:04 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:21:04 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.8ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:21:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 5ms (Views: 4.4ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 2.9ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:21:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:04 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (1.0ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.9ms (1 query, 0 cached) | GC: 0.9ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:04 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:05 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:05 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.8ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:07 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:07 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.3ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:28 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:23:28 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:24:35 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (1.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 6ms (Views: 3.7ms | ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:24:35 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:24:37 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.6ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.5ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 2.4ms (5 queries, 0 cached) | GC: 1.4ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-12" for ::1 at 2026-03-12 00:24:38 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.1ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.7ms (5 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-14" for ::1 at 2026-03-12 00:24:40 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-14"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.9ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-14' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.5ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-14 00:00:00' AND start_time < '2026-03-14 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 9ms (Views: 0.1ms | ActiveRecord: 2.8ms (5 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-15" for ::1 at 2026-03-12 00:24:41 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=3&date=2026-03-13" for ::1 at 2026-03-12 00:24:42 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"3", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 3 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 10ms (Views: 0.2ms | ActiveRecord: 1.8ms (5 queries, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:25:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.8ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:25:11 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:31:50 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (42.0ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 51ms (Views: -7.3ms | ActiveRecord: 57.4ms (1 query, 0 cached) | GC: 2.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:31:50 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.8ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:32:13 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.8ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.6ms | ActiveRecord: 0.7ms (1 query, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:32:13 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:32:42 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.1ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:32:42 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=1&date=2026-03-12" for ::1 at 2026-03-12 00:32:44 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"1", "date"=>"2026-03-12"}
+  [1m[36mService Load (1.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (1.8ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (1.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (3.3ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (1.0ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 21ms (Views: 0.1ms | ActiveRecord: 9.8ms (5 queries, 0 cached) | GC: 4.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=4&date=2026-03-12" for ::1 at 2026-03-12 00:32:46 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"4", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.4ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 12ms (Views: 0.1ms | ActiveRecord: 1.9ms (5 queries, 0 cached) | GC: 2.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=7&date=2026-03-12" for ::1 at 2026-03-12 00:32:50 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"7", "date"=>"2026-03-12"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 7 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.5ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 4 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.5ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-12' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.7ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-12 00:00:00' AND start_time < '2026-03-12 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.4ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 5 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 11ms (Views: 0.1ms | ActiveRecord: 2.5ms (5 queries, 0 cached) | GC: 1.3ms)
+
+
+Started GET "/api/v1/available_slots?service_id=7&date=2026-03-14" for ::1 at 2026-03-12 00:32:55 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"7", "date"=>"2026-03-14"}
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 7 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 6 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-14' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-14 00:00:00' AND start_time < '2026-03-14 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.3ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 7 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 11ms (Views: 0.1ms | ActiveRecord: 2.0ms (5 queries, 0 cached) | GC: 1.1ms)
+
+
+Started GET "/api/v1/available_slots?service_id=7&date=2026-03-15" for ::1 at 2026-03-12 00:32:56 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"7", "date"=>"2026-03-15"}
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 7 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 0 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+Completed 200 OK in 4ms (Views: 0.1ms | ActiveRecord: 0.7ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/available_slots?service_id=7&date=2026-03-13" for ::1 at 2026-03-12 00:32:58 +0200
+Processing by Api::V1::AvailableSlotsController#index as HTML
+  Parameters: {"service_id"=>"7", "date"=>"2026-03-13"}
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 7 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:6:in `index'
+  [1m[36mWorkSchedule Load (0.3ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" WHERE "work_schedules"."day_of_week" = 5 LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:10:in `index'
+  [1m[36mHoliday Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "holidays" WHERE "holidays"."date" = '2026-03-13' LIMIT 1 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:12:in `index'
+  [1m[36mAppointment Pluck (0.4ms)[0m  [1m[34mSELECT "appointments"."start_time", "appointments"."end_time" FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time >= '2026-03-13 00:00:00' AND start_time < '2026-03-13 23:59:59.999999') /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:23:in `index'
+  [1m[36mScheduleBreak Pluck (0.2ms)[0m  [1m[34mSELECT "schedule_breaks"."start_time", "schedule_breaks"."end_time" FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" = 6 /*action='index',application='Backend',controller='available_slots'*/[0m
+  ↳ app/controllers/api/v1/available_slots_controller.rb:26:in `index'
+Completed 200 OK in 6ms (Views: 0.1ms | ActiveRecord: 1.6ms (5 queries, 0 cached) | GC: 0.5ms)
+
+
+Started POST "/api/v1/appointments" for ::1 at 2026-03-12 00:33:16 +0200
+Processing by Api::V1::AppointmentsController#create as HTML
+  Parameters: {"service_id"=>7, "appointment"=>{"client_name"=>"Хуй зна хто", "client_phone"=>"123456", "client_email"=>"[FILTERED]", "notes"=>"", "start_time"=>"2026-03-13T09:00:00+00:00", "language_used"=>"uk"}}
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE AND "services"."id" = 7 LIMIT 1 /*action='create',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/appointments_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN /*action='create',application='Backend',controller='appointments'*/[0m
+  ↳ app/models/appointment.rb:27:in `no_overlapping_appointments'
+  [1m[36mAppointment Exists? (1.6ms)[0m  [1m[34mSELECT 1 AS one FROM "appointments" WHERE "appointments"."status" != 2 AND (start_time < '2026-03-13 10:30:00' AND end_time > '2026-03-13 09:00:00') LIMIT 1 /*action='create',application='Backend',controller='appointments'*/[0m
+  ↳ app/models/appointment.rb:27:in `no_overlapping_appointments'
+  [1m[36mAppointment Create (9.5ms)[0m  [1m[32mINSERT INTO "appointments" ("client_name", "client_phone", "client_email", "service_id", "start_time", "end_time", "status", "language_used", "notes", "created_at", "updated_at") VALUES ('Хуй зна хто', '123456', '', 7, '2026-03-13 09:00:00', '2026-03-13 10:30:00', 0, 'uk', '', '2026-03-11 22:33:16.531361', '2026-03-11 22:33:16.531361') RETURNING "id" /*action='create',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/appointments_controller.rb:10:in `create'
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT /*action='create',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/appointments_controller.rb:10:in `create'
+Completed 201 Created in 42ms (Views: 0.4ms | ActiveRecord: 24.4ms (3 queries, 0 cached) | GC: 1.0ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:33:20 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 3.6ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/services" for ::1 at 2026-03-12 00:33:20 +0200
+Processing by Api::V1::ServicesController#index as HTML
+  [1m[36mService Load (0.7ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/services_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/admin/auth/login" for ::1 at 2026-03-12 00:34:37 +0200
+Processing by Api::V1::Admin::AuthController#login as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "auth"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mAdminUser Load (1.4ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."email" = 'admin@beautysalon.com' LIMIT 1 /*action='login',application='Backend',controller='auth'*/[0m
+  ↳ app/controllers/api/v1/admin/auth_controller.rb:6:in `login'
+Completed 200 OK in 243ms (Views: 0.1ms | ActiveRecord: 14.6ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/admin/dashboard" for ::1 at 2026-03-12 00:34:37 +0200
+Processing by Api::V1::Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Count (1.6ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-11 00:00:00' AND '2026-03-11 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:28:in `index'
+  [1m[36mAppointment Count (0.7ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:29:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:30:in `index'
+  [1m[36mAppointment Sum (2.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:31:in `index'
+  [1m[36mAppointment Sum (0.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:32:in `index'
+  [1m[36mAppointment Load (0.9ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE (start_time > '2026-03-11 22:34:37.669452') AND "appointments"."status" != 2 ORDER BY "appointments"."start_time" ASC LIMIT 10 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:34:in `index'
+  [1m[36mAppointment Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."status" = 0 AND (start_time > '2026-03-11 22:34:37.688397') /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:35:in `index'
+Completed 200 OK in 22ms (Views: 0.1ms | ActiveRecord: 7.7ms (10 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/admin/dashboard" for ::1 at 2026-03-12 00:34:37 +0200
+Processing by Api::V1::Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-11 00:00:00' AND '2026-03-11 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:28:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:29:in `index'
+  [1m[36mAppointment Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:30:in `index'
+  [1m[36mAppointment Sum (0.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:31:in `index'
+  [1m[36mAppointment Sum (0.5ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:32:in `index'
+  [1m[36mAppointment Load (0.4ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE (start_time > '2026-03-11 22:34:37.695055') AND "appointments"."status" != 2 ORDER BY "appointments"."start_time" ASC LIMIT 10 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:34:in `index'
+  [1m[36mAppointment Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."status" = 0 AND (start_time > '2026-03-11 22:34:37.702888') /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:35:in `index'
+Completed 200 OK in 11ms (Views: 0.1ms | ActiveRecord: 3.5ms (10 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 00:34:55 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.8ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.6ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 4ms (Views: 1.4ms | ActiveRecord: 1.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 00:34:55 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 7ms (Views: 5.4ms | ActiveRecord: 0.7ms (2 queries, 0 cached) | GC: 3.6ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-12 00:35:06 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.3ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 6ms (Views: 2.2ms | ActiveRecord: 1.2ms (3 queries, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-12 00:35:06 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.4ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.2ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 4ms (Views: 1.7ms | ActiveRecord: 0.9ms (3 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/admin/work_schedules" for ::1 at 2026-03-12 00:35:11 +0200
+Processing by Api::V1::Admin::WorkSchedulesController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" ORDER BY "work_schedules"."day_of_week" ASC /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+  [1m[36mScheduleBreak Load (0.5ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" IN (1, 2, 3, 4, 5, 6, 7) /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+Completed 200 OK in 7ms (Views: 0.2ms | ActiveRecord: 1.4ms (3 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/admin/work_schedules" for ::1 at 2026-03-12 00:35:11 +0200
+Processing by Api::V1::Admin::WorkSchedulesController#index as HTML
+  [1m[36mAdminUser Load (0.3ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mWorkSchedule Load (0.2ms)[0m  [1m[34mSELECT "work_schedules".* FROM "work_schedules" ORDER BY "work_schedules"."day_of_week" ASC /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+  [1m[36mScheduleBreak Load (0.5ms)[0m  [1m[34mSELECT "schedule_breaks".* FROM "schedule_breaks" WHERE "schedule_breaks"."work_schedule_id" IN (1, 2, 3, 4, 5, 6, 7) /*action='index',application='Backend',controller='work_schedules'*/[0m
+  ↳ app/controllers/api/v1/admin/work_schedules_controller.rb:9:in `index'
+Completed 200 OK in 5ms (Views: 0.1ms | ActiveRecord: 1.0ms (3 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/gallery_items" for ::1 at 2026-03-12 00:35:21 +0200
+Processing by Api::V1::GalleryItemsController#index as HTML
+  [1m[36mGalleryItem Load (1.7ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC /*action='index',application='Backend',controller='gallery_items'*/[0m
+  ↳ app/controllers/api/v1/gallery_items_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.9ms | ActiveRecord: 1.1ms (1 query, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/gallery_items" for ::1 at 2026-03-12 00:35:21 +0200
+Processing by Api::V1::GalleryItemsController#index as HTML
+  [1m[36mGalleryItem Load (0.5ms)[0m  [1m[34mSELECT "gallery_items".* FROM "gallery_items" ORDER BY "gallery_items"."sort_order" ASC, "gallery_items"."created_at" DESC /*action='index',application='Backend',controller='gallery_items'*/[0m
+  ↳ app/controllers/api/v1/gallery_items_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.5ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-12 00:35:47 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.3ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 5ms (Views: 2.2ms | ActiveRecord: 1.1ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-12 00:35:47 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.4ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.2ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 3ms (Views: 2.0ms | ActiveRecord: 0.8ms (3 queries, 0 cached) | GC: 0.0ms)
+
+
+Started PUT "/api/v1/admin/appointments/1" for ::1 at 2026-03-12 00:35:52 +0200
+Processing by Api::V1::Admin::AppointmentsController#update as HTML
+  Parameters: {"appointment"=>{"status"=>"confirmed"}, "id"=>"1"}
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='update',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.5ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE "appointments"."id" = 1 LIMIT 1 /*action='update',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:49:in `set_appointment'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN /*action='update',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:34:in `update'
+  [1m[36mAppointment Update (2.1ms)[0m  [1m[33mUPDATE "appointments" SET "status" = 1, "updated_at" = '2026-03-11 22:35:52.463613' WHERE "appointments"."id" = 1 /*action='update',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:34:in `update'
+  [1m[36mTRANSACTION (1.1ms)[0m  [1m[35mCOMMIT /*action='update',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:34:in `update'
+Completed 200 OK in 11ms (Views: 0.3ms | ActiveRecord: 4.4ms (3 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-12 00:35:52 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.4ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 5ms (Views: 2.0ms | ActiveRecord: 1.2ms (3 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/admin/appointments?date=2026-03-13" for ::1 at 2026-03-12 00:36:08 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  Parameters: {"date"=>"2026-03-13"}
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.6ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-13 00:00:00' AND '2026-03-13 23:59:59.999999' ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 9ms (Views: 4.3ms | ActiveRecord: 1.4ms (3 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/admin/appointments?date=2026-03-14" for ::1 at 2026-03-12 00:36:14 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  Parameters: {"date"=>"2026-03-14"}
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.4ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-14 00:00:00' AND '2026-03-14 23:59:59.999999' ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 5ms (Views: 1.6ms | ActiveRecord: 0.9ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/appointments" for ::1 at 2026-03-12 00:36:16 +0200
+Processing by Api::V1::Admin::AppointmentsController#index as HTML
+  [1m[36mAdminUser Load (0.8ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Load (0.4ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" ORDER BY "appointments"."start_time" DESC /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+  [1m[36mService Load (1.0ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='appointments'*/[0m
+  ↳ app/controllers/api/v1/admin/appointments_controller.rb:26:in `index'
+Completed 200 OK in 8ms (Views: 3.6ms | ActiveRecord: 2.1ms (3 queries, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/admin/dashboard" for ::1 at 2026-03-12 00:36:19 +0200
+Processing by Api::V1::Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-11 00:00:00' AND '2026-03-11 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:28:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:29:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:30:in `index'
+  [1m[36mAppointment Sum (0.8ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:31:in `index'
+  [1m[36mAppointment Sum (0.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:32:in `index'
+  [1m[36mAppointment Load (0.3ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE (start_time > '2026-03-11 22:36:19.920887') AND "appointments"."status" != 2 ORDER BY "appointments"."start_time" ASC LIMIT 10 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Load (0.2ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:34:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."status" = 0 AND (start_time > '2026-03-11 22:36:19.931600') /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:35:in `index'
+Completed 200 OK in 15ms (Views: 0.3ms | ActiveRecord: 4.1ms (10 queries, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/api/v1/admin/dashboard" for ::1 at 2026-03-12 00:36:19 +0200
+Processing by Api::V1::Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mAppointment Count (0.5ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-11 00:00:00' AND '2026-03-11 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:28:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:29:in `index'
+  [1m[36mAppointment Count (0.4ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:30:in `index'
+  [1m[36mAppointment Sum (0.5ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-09 00:00:00' AND '2026-03-15 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:31:in `index'
+  [1m[36mAppointment Sum (0.4ms)[0m  [1m[34mSELECT SUM("services"."price") FROM "appointments" INNER JOIN "services" ON "services"."id" = "appointments"."service_id" WHERE "appointments"."start_time" BETWEEN '2026-03-01 00:00:00' AND '2026-03-31 23:59:59.999999' AND "appointments"."status" != 2 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:32:in `index'
+  [1m[36mAppointment Load (0.3ms)[0m  [1m[34mSELECT "appointments".* FROM "appointments" WHERE (start_time > '2026-03-11 22:36:19.940279') AND "appointments"."status" != 2 ORDER BY "appointments"."start_time" ASC LIMIT 10 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Load (0.3ms)[0m  [1m[34mSELECT "services".* FROM "services" WHERE "services"."id" = 7 /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:33:in `index'
+  [1m[36mService Count (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "services" WHERE "services"."active" = TRUE /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:34:in `index'
+  [1m[36mAppointment Count (0.3ms)[0m  [1m[34mSELECT COUNT(*) FROM "appointments" WHERE "appointments"."status" = 0 AND (start_time > '2026-03-11 22:36:19.947792') /*action='index',application='Backend',controller='dashboard'*/[0m
+  ↳ app/controllers/api/v1/admin/dashboard_controller.rb:35:in `index'
+Completed 200 OK in 13ms (Views: 0.1ms | ActiveRecord: 3.5ms (10 queries, 0 cached) | GC: 2.1ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 00:36:24 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.5ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 7ms (Views: 4.1ms | ActiveRecord: 0.9ms (2 queries, 0 cached) | GC: 1.1ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 00:36:24 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.6ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 3ms (Views: 1.0ms | ActiveRecord: 1.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 00:38:19 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (131.7ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.4ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 139ms (Views: 2.7ms | ActiveRecord: 132.1ms (2 queries, 0 cached) | GC: 0.5ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 00:38:19 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (0.3ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (0.5ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 5ms (Views: 1.8ms | ActiveRecord: 0.8ms (2 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 01:08:35 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (69.2ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (1.5ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 84ms (Views: 4.1ms | ActiveRecord: 100.2ms (2 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/admin/services" for ::1 at 2026-03-12 01:08:35 +0200
+Processing by Api::V1::Admin::ServicesController#index as HTML
+  [1m[36mAdminUser Load (94.0ms)[0m  [1m[34mSELECT "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = 1 LIMIT 1 /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/application_controller.rb:13:in `authenticate_admin!'
+  [1m[36mService Load (25.7ms)[0m  [1m[34mSELECT "services".* FROM "services" ORDER BY "services"."created_at" DESC /*action='index',application='Backend',controller='services'*/[0m
+  ↳ app/controllers/api/v1/admin/services_controller.rb:10:in `index'
+Completed 200 OK in 125ms (Views: 3.0ms | ActiveRecord: 119.6ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
