@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Card, CardBody, Chip } from "@heroui/react";
-import { getServices } from "../api/api";
+import { Button, Card, CardBody, Chip, Modal, ModalContent, ModalBody } from "@heroui/react";
+import { getServices, getGalleryItems } from "../api/api";
 import backgroundImg from "../assets/background.png";
 
 const categoryIcons = {
@@ -65,11 +66,20 @@ export default function HomePage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const lang = i18n.language?.startsWith("uk") ? "uk" : "en";
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const { data: services = [] } = useQuery({
     queryKey: ["services"],
     queryFn: async () => {
       const { data } = await getServices();
+      return data;
+    },
+  });
+
+  const { data: galleryItems = [] } = useQuery({
+    queryKey: ["gallery"],
+    queryFn: async () => {
+      const { data } = await getGalleryItems();
       return data;
     },
   });
@@ -139,93 +149,129 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      {/* Gallery Section */}
+      {galleryItems.length > 0 && (
+        <section className="py-16 md:py-24 bg-transparent relative z-10 w-full">
+          <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
+            <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-fresha-dark tracking-tight">
+                {t("portfolio.title", "Our Portfolio")}
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+                {t("portfolio.subtitle", "A glimpse into our beautiful transformations.")}
+              </p>
+              <div className="w-16 h-1 bg-fresha-dark mx-auto mt-6 rounded-full" />
+            </div>
 
-      {/* Services Section */}
-      <section className="py-24 bg-transparent relative z-10 w-full flex justify-center">
-        <div className="container px-4 max-w-6xl">
-          <div className="text-center mb-16">
+            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+              {galleryItems.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className="break-inside-avoid animate-in fade-in zoom-in duration-700 fill-mode-both"
+                  style={{ animationDelay: `${idx * 100}ms` }}
+                >
+                  <div
+                    className="relative group rounded-xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
+                    onClick={() => setSelectedImage(item)}
+                  >
+                    {item.media_type === "video" ? (
+                      <video
+                        src={item.image_url}
+                        className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
+                        muted
+                        loop
+                        onMouseOver={(e) => e.target.play()}
+                        onMouseOut={(e) => {
+                          e.target.pause();
+                          e.target.currentTime = 0;
+                        }}
+                      />
+                    ) : (
+                      <img
+                        src={item.image_url}
+                        alt={lang === "uk" ? item.description_uk : item.description_en}
+                        loading="lazy"
+                        className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 rounded-xl">
+                      <p className="text-white text-sm font-medium translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                        {lang === "uk" ? item.description_uk : item.description_en}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Lightbox Modal */}
+      <Modal
+        isOpen={!!selectedImage}
+        onOpenChange={(isOpen) => !isOpen && setSelectedImage(null)}
+        size="4xl"
+        classNames={{
+          base: "bg-transparent shadow-none",
+          closeButton: "top-2 right-2 bg-black/50 text-white hover:bg-black/80 z-50",
+          backdrop: "bg-black/90 backdrop-blur-sm",
+        }}
+      >
+        <ModalContent>
+          {() => (
+            <ModalBody className="p-0 items-center justify-center pointer-events-none relative pt-12">
+              <div className="relative pointer-events-auto">
+                {selectedImage?.media_type === "video" ? (
+                  <video
+                    src={selectedImage?.image_url}
+                    className="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+                    controls
+                    autoPlay
+                  />
+                ) : (
+                  <img
+                    src={selectedImage?.image_url}
+                    alt={lang === "uk" ? selectedImage?.description_uk : selectedImage?.description_en}
+                    className="w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+                  />
+                )}
+                {selectedImage && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-md p-4 rounded-b-xl">
+                    <p className="text-white text-center text-lg">
+                      {lang === "uk" ? selectedImage.description_uk : selectedImage.description_en}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </ModalBody>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Map Section - How to find me */}
+      <section className="py-16 md:py-24 bg-transparent relative z-10 w-full">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-fresha-dark tracking-tight">
-              {t("services.title")}
+              {t("findMe.title", "How to Find Me")}
             </h2>
             <p className="text-gray-600 max-w-xl mx-auto text-lg">
-              {t("services.subtitle")}
+              {t("footer.address", "Odesa, Ukraine")}
             </p>
+            <div className="w-16 h-1 bg-fresha-dark mx-auto mt-6 rounded-full" />
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, idx) => (
-              <div
-                key={service.id}
-                className="animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both"
-                style={{ animationDelay: `${idx * 150}ms` }}
-              >
-                <Card
-                  isPressable
-                  className="w-full h-full border-none shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white overflow-visible group"
-                  onPress={() =>
-                    navigate("/booking", { state: { serviceId: service.id } })
-                  }
-                >
-                  {/* Top colored accent line */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-fresha-dark to-gray-700 rounded-t-xl" />
-
-                  <CardBody className="p-6 flex flex-col h-full mt-1">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="w-12 h-12 rounded-xl bg-gray-100 text-fresha-dark flex items-center justify-center group-hover:bg-fresha-dark group-hover:text-white transition-colors">
-                        {categoryIcons[service.category] || categoryIcons.brows}
-                      </div>
-                      <Chip
-                        size="sm"
-                        variant="flat"
-                        className="bg-gray-100 text-fresha-dark font-medium"
-                      >
-                        {t(
-                          `services.categories.${service.category}`,
-                          service.category,
-                        )}
-                      </Chip>
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-2 text-fresha-dark text-left">
-                      {lang === "uk" ? service.name_uk : service.name_en}
-                    </h3>
-
-                    <p className="text-gray-500 text-sm mb-6 flex-grow text-left line-clamp-3">
-                      {lang === "uk"
-                        ? service.description_uk
-                        : service.description_en}
-                    </p>
-
-                    <div className="flex justify-between items-center pt-4 border-t border-gray-100 mt-auto">
-                      <div className="flex items-center gap-1.5 text-gray-500">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                        <span className="text-sm font-medium">
-                          {t("services.duration", {
-                            minutes: service.duration_minutes,
-                          })}
-                        </span>
-                      </div>
-                      <span className="text-lg font-bold text-fresha-dark">
-                        ₴{Number(service.price).toFixed(0)}
-                      </span>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-            ))}
+          <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1371.5322837054077!2d30.829514699659846!3d46.56618847355978!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c63b1da34d876f%3A0xfa33a773051ed9b9!2z0JbQmiDQn9Cw0YDQuiDRhNC-0L3RgtCw0L3RltCy!5e0!3m2!1suk!2sua!4v1773431488582!5m2!1suk!2sua"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Google Maps Location"
+            ></iframe>
           </div>
         </div>
       </section>

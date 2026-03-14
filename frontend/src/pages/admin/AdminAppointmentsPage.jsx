@@ -1347,6 +1347,8 @@ export default function AdminAppointmentsPage() {
             slotDuration={SLOT_DURATIONS[slotDurationIdx]}
             slotMinTime="07:00:00"
             slotMaxTime="21:00:00"
+            slotLabelFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
+            eventTimeFormat={{ hour: '2-digit', minute: '2-digit', hour12: false }}
             allDaySlot={true}
             height="calc(100vh - 280px)"
             selectable

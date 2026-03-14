@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -6,9 +5,6 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
   Button,
   Dropdown,
   DropdownTrigger,
@@ -18,7 +14,6 @@ import {
 
 export default function Header() {
   const { t, i18n } = useTranslation();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
@@ -37,7 +32,6 @@ export default function Header() {
   return (
     <Navbar
       isBordered
-      onMenuOpenChange={setIsMenuOpen}
       classNames={{
         item: [
           "flex",
@@ -56,10 +50,6 @@ export default function Header() {
       }}
     >
       <NavbarContent>
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
         <NavbarBrand className="gap-2">
           <Link
             to="/"
@@ -95,7 +85,7 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="hidden sm:flex">
+        <NavbarItem>
           <Dropdown>
             <DropdownTrigger>
               <Button
@@ -135,45 +125,7 @@ export default function Header() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarMenu className="pt-6">
-        <div className="flex flex-col gap-4 mb-8">
-          {navItems.map((item, index) => (
-            <NavbarMenuItem key={`${item.label}-${index}`}>
-              <Link
-                className={`w-full text-xl ${isActive(item.path) ? "text-fresha-dark font-bold" : "text-gray-600"}`}
-                to={item.path}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
-        </div>
 
-        <div className="border-t border-gray-100 pt-8 mt-auto pb-10">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
-            {currentLang === "uk" ? "Мова" : "Language"}
-          </p>
-          <div className="flex gap-3">
-            <Button
-              size="md"
-              variant={currentLang === "uk" ? "solid" : "bordered"}
-              className={`flex-1 rounded-xl font-bold ${currentLang === "uk" ? "bg-fresha-dark text-white" : "border-gray-200 text-gray-600"}`}
-              onPress={() => handleLanguageChange("uk")}
-            >
-              UA
-            </Button>
-            <Button
-              size="md"
-              variant={currentLang === "en" ? "solid" : "bordered"}
-              className={`flex-1 rounded-xl font-bold ${currentLang === "en" ? "bg-fresha-dark text-white" : "border-gray-200 text-gray-600"}`}
-              onPress={() => handleLanguageChange("en")}
-            >
-              EN
-            </Button>
-          </div>
-        </div>
-      </NavbarMenu>
     </Navbar>
   );
 }

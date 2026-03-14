@@ -9,8 +9,10 @@ class TelegramNotifier
 
     appointment = appointment.reload if appointment.services.loaded? == false
     services = appointment.services.map { |s| s.name_uk }.join(", ")
-    date = appointment.start_time.strftime("%d.%m.%Y")
-    time = "#{appointment.start_time.strftime('%H:%M')} – #{appointment.end_time.strftime('%H:%M')}"
+    start_time = appointment.start_time.in_time_zone
+    end_time = appointment.end_time.in_time_zone
+    date = start_time.strftime("%d.%m.%Y")
+    time = "#{start_time.strftime('%H:%M')} – #{end_time.strftime('%H:%M')}"
 
     text = <<~MSG
       📋 *Новий запис\\!*
