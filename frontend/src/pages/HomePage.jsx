@@ -87,7 +87,7 @@ export default function HomePage() {
   return (
     <div className="w-full">
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-64px)] md:min-h-[85vh] flex flex-col overflow-hidden">
+      <section className="relative min-h-[calc(100dvh-64px)] md:min-h-[85vh] flex flex-col overflow-hidden">
         {/* Decorative background elements (Tailwind implementation) */}
         <div className="absolute top-[10%] left-[5%] w-[200px] h-[200px] rounded-full bg-cyan-500/5 animate-[pulse_6s_ease-in-out_infinite]" />
         <div className="absolute bottom-[15%] right-[10%] w-[150px] h-[150px] rounded-full bg-cyan-500/10 animate-[pulse_8s_ease-in-out_infinite_reverse]" />
@@ -121,7 +121,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="pb-12 pt-8 flex justify-center animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
+          <div className="pt-8 pb-safe-hero flex justify-center animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-500">
             <Button
               size="lg"
               color="primary"

@@ -20,6 +20,11 @@
   padding-bottom: max(1rem, calc(1rem + env(safe-area-inset-bottom)));
 }
 
+/* iOS safe area for hero CTA button */
+.pb-safe-hero {
+  padding-bottom: max(3rem, calc(3rem + env(safe-area-inset-bottom)));
+}
+
 /* FullCalendar admin overrides */
 .fc-admin .fc {
   --fc-border-color: #e5e7eb;
