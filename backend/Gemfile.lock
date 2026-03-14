@@ -165,6 +165,8 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.5)
+    nokogiri (1.19.1-aarch64-linux-gnu)
+      racc (~> 1.4)
     nokogiri (1.19.1-x86_64-darwin)
       racc (~> 1.4)
     nokogiri (1.19.1-x86_64-linux-gnu)
@@ -174,6 +176,7 @@ GEM
     parser (3.3.10.2)
       ast (~> 2.4.1)
       racc
+    pg (1.6.3-aarch64-linux)
     pg (1.6.3-x86_64-darwin)
     pg (1.6.3-x86_64-linux)
     pp (0.6.3)
@@ -292,6 +295,7 @@ GEM
       ostruct
     stringio (3.2.0)
     thor (1.5.0)
+    thruster (0.1.19-aarch64-linux)
     thruster (0.1.19-x86_64-darwin)
     thruster (0.1.19-x86_64-linux)
     timeout (0.6.1)
@@ -310,6 +314,7 @@ GEM
     zeitwerk (2.7.5)
 
 PLATFORMS
+  aarch64-linux
   x86_64-darwin-24
   x86_64-linux
 
