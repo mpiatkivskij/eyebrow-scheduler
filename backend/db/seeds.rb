@@ -1,10 +1,10 @@
 # Create admin user
-AdminUser.find_or_create_by!(email: 'piatkivska') do |user|
+AdminUser.find_or_create_by!(email: 'tanyusha.ivanyusha@gmail.com') do |user|
   password = SecureRandom.hex(12) # Generate a random password
   user.password = password
   user.password_confirmation = password
 end
-puts "Admin user created: piatkivska / #{password}"
+puts "Admin user created: tanyusha.ivanyusha@gmail.com / #{password}"
 
 # Create services
 Appointment.destroy_all
