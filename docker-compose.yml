@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:16
+    container_name: eyebrow-scheduler-db
+    restart: unless-stopped
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=eyebrow_scheduler_production
+      - POSTGRES_USER=eyebrow_scheduler
+      - POSTGRES_PASSWORD=jvSySmwogElObIX6RiMsWcet0srKy
+    networks:
+      - eyebrow-scheduler
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eyebrow_scheduler -d eyebrow_scheduler_production"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: eyebrow-scheduler-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./backend/.env
+    networks:
+      - eyebrow-scheduler
+
+  nginx:
+    build: ./frontend
+    container_name: eyebrow-scheduler-nginx
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8085:80"
+    networks:
+      - eyebrow-scheduler
+      - apps-network
+
+volumes:
+  db:
+    name: eyebrow_scheduler_db
+
+networks:
+  eyebrow-scheduler:
+    name: eyebrow_scheduler_network
+  apps-network:
+    external: true

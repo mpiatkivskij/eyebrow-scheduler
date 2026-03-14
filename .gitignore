@@ -2,3 +2,5 @@
 backend/log/
 backend/tmp/
 backend/config/master.key
+
+*.env
