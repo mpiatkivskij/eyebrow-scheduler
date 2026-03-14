@@ -582,8 +582,8 @@ export default function BookingPage() {
 
       {/* Sticky Bottom Summary Bars */}
       {step === 0 && selectedServices.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] animate-in slide-in-from-bottom-5">
-          <div className="container mx-auto max-w-2xl px-4 flex justify-between items-center gap-4">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-4 pb-safe z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] animate-in slide-in-from-bottom-5">
+          <div className="container mx-auto max-w-2xl flex justify-between items-center gap-4">
             <div className="flex-1">
               <h4 className="font-bold text-sm text-fresha-dark mb-0.5 max-w-[200px] truncate">
                 {selectedServices.length === 1
@@ -610,8 +610,8 @@ export default function BookingPage() {
       )}
 
       {step === 1 && selectedSlot && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] animate-in slide-in-from-bottom-5">
-          <div className="container mx-auto max-w-2xl px-4 flex justify-between items-center gap-4">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-4 pb-safe z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] animate-in slide-in-from-bottom-5">
+          <div className="container mx-auto max-w-2xl flex justify-between items-center gap-4">
             <div className="flex-1">
               <h4 className="font-bold text-sm text-fresha-dark mb-0.5">
                 {selectedDate.format("DD MMM")} •{" "}
@@ -633,7 +633,7 @@ export default function BookingPage() {
       )}
 
       {step === 2 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-4 pb-safe z-50 shadow-[0_-4px_12px_rgba(0,0,0,0.03)] animate-in slide-in-from-bottom-5">
           <div className="container mx-auto max-w-2xl px-4 flex justify-between items-center gap-4">
             <div className="flex-1 pr-4">
               <span className="font-bold text-xl block leading-none">

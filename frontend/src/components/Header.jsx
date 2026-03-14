@@ -53,7 +53,7 @@ export default function Header() {
         <NavbarBrand className="gap-2">
           <Link
             to="/"
-            className="font-bold text-inherit tracking-wide flex items-center gap-1.5 sm:gap-2 max-w-full overflow-hidden"
+            className="font-bold text-inherit tracking-wide flex items-center gap-1.5 sm:gap-2"
           >
             <img
               src="/icon.svg"

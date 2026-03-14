@@ -46,19 +46,21 @@ export default function PortfolioPage() {
                 onClick={() => setSelectedImage(item)}
               >
                 {item.media_type === "video" ? (
-                  <video
-                    src={item.image_url}
-                    className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    onMouseOver={(e) => e.target.play()}
-                    onMouseOut={(e) => {
-                      e.target.pause();
-                      e.target.currentTime = 0;
-                    }}
-                  />
+                  <>
+                    <img
+                      src={item.image_url.replace(/\.[^.]+$/, ".jpg")}
+                      alt={lang === "uk" ? item.description_uk : item.description_en}
+                      loading="lazy"
+                      className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center group-hover:bg-black/70 transition-colors">
+                        <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </>
                 ) : (
                   <img
                     src={item.image_url}

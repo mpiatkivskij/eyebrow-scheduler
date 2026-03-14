@@ -15,6 +15,11 @@
   }
 }
 
+/* iOS safe area for fixed bottom bars */
+.pb-safe {
+  padding-bottom: max(1rem, calc(1rem + env(safe-area-inset-bottom)));
+}
+
 /* FullCalendar admin overrides */
 .fc-admin .fc {
   --fc-border-color: #e5e7eb;
