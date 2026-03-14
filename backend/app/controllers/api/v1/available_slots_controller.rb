@@ -3,16 +3,32 @@ module Api
     class AvailableSlotsController < ApplicationController
       def index
         date = Date.parse(params[:date])
-        service = Service.active.find(params[:service_id])
-        duration = service.duration_minutes
+        service_ids = params[:service_ids].to_s.split(',')
+        services = Service.active.where(id: service_ids)
+        duration = services.sum(:duration_minutes)
+
+        if duration.zero?
+          render json: { slots: [], message: 'No services selected' }
+          return
+        end
 
         # Get work schedule for that day
         schedule = WorkSchedule.find_by(day_of_week: date.wday)
 
-        if schedule.nil? || schedule.is_day_off? || Holiday.exists?(date: date)
+        if schedule.nil? || schedule.is_day_off?
           render json: { slots: [], message: 'Not a working day' }
           return
         end
+
+        # Check for full-day holidays
+        if Holiday.where(date: date, start_time: nil, end_time: nil).exists?
+          render json: { slots: [], message: 'Not a working day' }
+          return
+        end
+
+        # Get partial-day holidays for this date
+        partial_holidays = Holiday.where(date: date).where.not(start_time: nil, end_time: nil)
+          .pluck(:start_time, :end_time)
 
         # Generate all possible slots
         slots = generate_slots(date, schedule, duration)
@@ -31,6 +47,11 @@ module Api
               br_start_dt = date.to_datetime.change(hour: br_start.hour, min: br_start.min)
               br_end_dt = date.to_datetime.change(hour: br_end.hour, min: br_end.min)
               slot_start < br_end_dt && slot_end > br_start_dt
+            end ||
+            partial_holidays.any? do |h_start, h_end|
+              h_start_dt = date.to_datetime.change(hour: h_start.hour, min: h_start.min)
+              h_end_dt = date.to_datetime.change(hour: h_end.hour, min: h_end.min)
+              slot_start < h_end_dt && slot_end > h_start_dt
             end
         end
 

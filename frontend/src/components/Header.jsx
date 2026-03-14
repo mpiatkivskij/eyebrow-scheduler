@@ -1,123 +1,179 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
-  AppBar, Toolbar, Typography, Button, IconButton, Box,
-  Drawer, List, ListItem, ListItemText, useMediaQuery, useTheme,
-  ToggleButtonGroup, ToggleButton, Container,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import SpaIcon from '@mui/icons-material/Spa';
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@heroui/react";
 
 export default function Header() {
   const { t, i18n } = useTranslation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
-    { label: t('nav.home'), path: '/' },
-    { label: t('nav.portfolio'), path: '/portfolio' },
-    { label: t('nav.booking'), path: '/booking' },
+    { label: t("nav.home", "Home"), path: "/" },
+    { label: t("nav.portfolio", "Portfolio"), path: "/portfolio" },
+    { label: t("nav.booking", "Booking"), path: "/booking" },
   ];
 
-  const handleLanguageChange = (_, newLang) => {
-    if (newLang) i18n.changeLanguage(newLang);
+  const handleLanguageChange = (key) => {
+    i18n.changeLanguage(key);
   };
 
   const isActive = (path) => location.pathname === path;
+  const currentLang = i18n.language?.startsWith("uk") ? "uk" : "en";
 
   return (
-    <>
-      <AppBar position="sticky" color="transparent" sx={{ zIndex: 1100 }}>
-        <Container maxWidth="lg">
-          <Toolbar sx={{ justifyContent: 'space-between', py: 0.5 }}>
-            <Box component={Link} to="/" sx={{ display: 'flex', alignItems: 'center', textDecoration: 'none', gap: 1 }}>
-              <SpaIcon sx={{ color: 'primary.main', fontSize: 32 }} />
-              <Typography variant="h6" sx={{ fontFamily: '"Playfair Display", serif', color: 'secondary.main', fontWeight: 700 }}>
-                Beauté
-              </Typography>
-            </Box>
+    <Navbar
+      isBordered
+      onMenuOpenChange={setIsMenuOpen}
+      classNames={{
+        item: [
+          "flex",
+          "relative",
+          "h-full",
+          "items-center",
+          "data-[active=true]:after:content-['']",
+          "data-[active=true]:after:absolute",
+          "data-[active=true]:after:bottom-0",
+          "data-[active=true]:after:left-0",
+          "data-[active=true]:after:right-0",
+          "data-[active=true]:after:h-[2px]",
+          "data-[active=true]:after:rounded-[2px]",
+          "data-[active=true]:after:bg-fresha-dark",
+        ],
+      }}
+    >
+      <NavbarContent>
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="sm:hidden"
+        />
+        <NavbarBrand className="gap-2">
+          <Link
+            to="/"
+            className="font-bold text-inherit tracking-wide flex items-center gap-1.5 sm:gap-2 max-w-full overflow-hidden"
+          >
+            <img
+              src="/icon.svg"
+              alt="Logo"
+              className="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0"
+            />
+            <span className="text-fresha-dark font-serif text-sm sm:text-lg whitespace-nowrap truncate">
+              Piatkivska Brow Artist
+            </span>
+          </Link>
+        </NavbarBrand>
+      </NavbarContent>
 
-            {!isMobile && (
-              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                {navItems.map((item) => (
-                  <Button
-                    key={item.path}
-                    component={Link}
-                    to={item.path}
-                    sx={{
-                      color: isActive(item.path) ? 'primary.main' : 'text.primary',
-                      fontWeight: isActive(item.path) ? 700 : 500,
-                      position: 'relative',
-                      '&::after': isActive(item.path) ? {
-                        content: '""', position: 'absolute', bottom: 4, left: '20%', right: '20%',
-                        height: 2, background: 'linear-gradient(90deg, #B76E79, #D4A0A7)', borderRadius: 1,
-                      } : {},
-                      '&:hover': { transform: 'none', boxShadow: 'none', backgroundColor: 'rgba(183,110,121,0.04)' },
-                    }}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </Box>
-            )}
+      <NavbarContent className="hidden lg:flex gap-4" justify="center">
+        {navItems.map((item) => (
+          <NavbarItem key={item.path} isActive={isActive(item.path)}>
+            <Link
+              to={item.path}
+              className={
+                isActive(item.path)
+                  ? "text-fresha-dark font-semibold"
+                  : "text-gray-600 hover:text-fresha-dark"
+              }
+            >
+              {item.label}
+            </Link>
+          </NavbarItem>
+        ))}
+      </NavbarContent>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <ToggleButtonGroup
-                value={i18n.language?.startsWith('uk') ? 'uk' : 'en'}
-                exclusive
-                onChange={handleLanguageChange}
-                size="small"
-                sx={{
-                  '& .MuiToggleButton-root': {
-                    borderRadius: '20px !important', px: 1.5, py: 0.3, fontSize: '0.75rem',
-                    border: '1px solid rgba(183,110,121,0.3)',
-                    '&.Mui-selected': { backgroundColor: 'primary.main', color: '#fff', '&:hover': { backgroundColor: 'primary.dark' } },
-                  },
-                }}
+      <NavbarContent justify="end">
+        <NavbarItem className="hidden sm:flex">
+          <Dropdown>
+            <DropdownTrigger>
+              <Button
+                variant="bordered"
+                size="sm"
+                className="min-w-16 border-gray-300"
               >
-                <ToggleButton value="en">EN</ToggleButton>
-                <ToggleButton value="uk">UA</ToggleButton>
-              </ToggleButtonGroup>
+                {currentLang.toUpperCase()}
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Language selection"
+              onAction={(key) => handleLanguageChange(key)}
+            >
+              <DropdownItem
+                key="en"
+                className={
+                  currentLang === "en"
+                    ? "bg-gray-100 text-fresha-dark font-bold"
+                    : ""
+                }
+              >
+                English
+              </DropdownItem>
+              <DropdownItem
+                key="uk"
+                className={
+                  currentLang === "uk"
+                    ? "bg-gray-100 text-fresha-dark font-bold"
+                    : ""
+                }
+              >
+                Українська
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        </NavbarItem>
+      </NavbarContent>
 
-              {isMobile && (
-                <IconButton onClick={() => setDrawerOpen(true)} sx={{ color: 'secondary.main' }}>
-                  <MenuIcon />
-                </IconButton>
-              )}
-            </Box>
-          </Toolbar>
-        </Container>
-      </AppBar>
-
-      <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <Box sx={{ width: 260, pt: 3 }}>
-          <Box sx={{ px: 3, pb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SpaIcon sx={{ color: 'primary.main' }} />
-            <Typography variant="h6" sx={{ fontFamily: '"Playfair Display", serif' }}>Beauté</Typography>
-          </Box>
-          <List>
-            {navItems.map((item) => (
-              <ListItem
-                key={item.path}
-                component={Link}
+      <NavbarMenu className="pt-6">
+        <div className="flex flex-col gap-4 mb-8">
+          {navItems.map((item, index) => (
+            <NavbarMenuItem key={`${item.label}-${index}`}>
+              <Link
+                className={`w-full text-xl ${isActive(item.path) ? "text-fresha-dark font-bold" : "text-gray-600"}`}
                 to={item.path}
-                onClick={() => setDrawerOpen(false)}
-                sx={{
-                  color: isActive(item.path) ? 'primary.main' : 'text.primary',
-                  borderLeft: isActive(item.path) ? '3px solid' : '3px solid transparent',
-                  borderColor: isActive(item.path) ? 'primary.main' : 'transparent',
-                  '&:hover': { backgroundColor: 'rgba(183,110,121,0.04)' },
-                }}
+                onClick={() => setIsMenuOpen(false)}
               >
-                <ListItemText primary={item.label} />
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
-    </>
+                {item.label}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </div>
+
+        <div className="border-t border-gray-100 pt-8 mt-auto pb-10">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+            {currentLang === "uk" ? "Мова" : "Language"}
+          </p>
+          <div className="flex gap-3">
+            <Button
+              size="md"
+              variant={currentLang === "uk" ? "solid" : "bordered"}
+              className={`flex-1 rounded-xl font-bold ${currentLang === "uk" ? "bg-fresha-dark text-white" : "border-gray-200 text-gray-600"}`}
+              onPress={() => handleLanguageChange("uk")}
+            >
+              UA
+            </Button>
+            <Button
+              size="md"
+              variant={currentLang === "en" ? "solid" : "bordered"}
+              className={`flex-1 rounded-xl font-bold ${currentLang === "en" ? "bg-fresha-dark text-white" : "border-gray-200 text-gray-600"}`}
+              onPress={() => handleLanguageChange("en")}
+            >
+              EN
+            </Button>
+          </div>
+        </div>
+      </NavbarMenu>
+    </Navbar>
   );
 }

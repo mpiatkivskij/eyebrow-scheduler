@@ -15,7 +15,7 @@ Rails.application.routes.draw do
         get 'dashboard', to: 'dashboard#index'
 
         resources :services
-        resources :appointments, only: [:index, :show, :update, :destroy]
+        resources :appointments, only: [:index, :show, :create, :update, :destroy]
         resources :work_schedules, only: [:index, :update] do
           collection do
             put :bulk_update

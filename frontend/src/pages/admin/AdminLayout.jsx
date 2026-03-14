@@ -1,109 +1,222 @@
-import { useState } from 'react';
-import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import {
-  Box, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton,
-  AppBar, Toolbar, Typography, IconButton, useMediaQuery, useTheme,
-} from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ContentCutIcon from '@mui/icons-material/ContentCut';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ScheduleIcon from '@mui/icons-material/Schedule';
-import CollectionsIcon from '@mui/icons-material/Collections';
-import LogoutIcon from '@mui/icons-material/Logout';
-import SpaIcon from '@mui/icons-material/Spa';
-
-const DRAWER_WIDTH = 260;
+import { useState } from "react";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Button } from "@heroui/react";
 
 export default function AdminLayout() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const menuItems = [
-    { label: t('admin.nav.dashboard'), path: '/admin/dashboard', icon: <DashboardIcon /> },
-    { label: t('admin.nav.services'), path: '/admin/services', icon: <ContentCutIcon /> },
-    { label: t('admin.nav.appointments'), path: '/admin/appointments', icon: <CalendarMonthIcon /> },
-    { label: t('admin.nav.schedule'), path: '/admin/schedule', icon: <ScheduleIcon /> },
-    { label: t('admin.nav.gallery'), path: '/admin/gallery', icon: <CollectionsIcon /> },
+    {
+      label: t("admin.nav.dashboard", "Dashboard"),
+      path: "/admin/dashboard",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("admin.nav.appointments", "Appointments"),
+      path: "/admin/appointments",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("admin.nav.gallery", "Gallery"),
+      path: "/admin/gallery",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("admin.nav.services", "Services"),
+      path: "/admin/services",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+          />
+        </svg>
+      ),
+    },
+    {
+      label: t("admin.nav.schedule", "Schedule"),
+      path: "/admin/schedule",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      ),
+    },
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('admin_token');
-    navigate('/admin/login');
+    localStorage.removeItem("admin_token");
+    navigate("/admin/login");
   };
 
-  const drawerContent = (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ p: 3, display: 'flex', alignItems: 'center', gap: 1.5, borderBottom: '1px solid rgba(0,0,0,0.06)' }}>
-        <SpaIcon sx={{ color: 'primary.main', fontSize: 28 }} />
-        <Typography variant="h6" sx={{ fontFamily: '"Playfair Display", serif', fontWeight: 700 }}>
-          Beauté
-        </Typography>
-      </Box>
-      <List sx={{ flex: 1, py: 2 }}>
-        {menuItems.map((item) => (
-          <ListItem key={item.path} disablePadding>
-            <ListItemButton
-              component={Link} to={item.path}
-              selected={location.pathname === item.path}
-              onClick={() => isMobile && setMobileOpen(false)}
-              sx={{
-                mx: 1.5, borderRadius: 2, mb: 0.5,
-                '&.Mui-selected': {
-                  background: 'linear-gradient(135deg, rgba(183,110,121,0.1), rgba(183,110,121,0.05))',
-                  color: 'primary.main',
-                  '& .MuiListItemIcon-root': { color: 'primary.main' },
-                },
-                '&:hover': { background: 'rgba(183,110,121,0.04)' },
-              }}
-            >
-              <ListItemIcon sx={{ minWidth: 40 }}>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.label} primaryTypographyProps={{ fontWeight: 500, fontSize: '0.9rem' }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Box sx={{ borderTop: '1px solid rgba(0,0,0,0.06)' }}>
-        <ListItem disablePadding>
-          <ListItemButton onClick={handleLogout} sx={{ mx: 1.5, borderRadius: 2, my: 1, color: 'text.secondary' }}>
-            <ListItemIcon sx={{ minWidth: 40 }}><LogoutIcon /></ListItemIcon>
-            <ListItemText primary={t('admin.nav.logout')} />
-          </ListItemButton>
-        </ListItem>
-      </Box>
-    </Box>
-  );
+  // Removed inline SidebarContent
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', background: '#F8F8F8' }}>
-      {isMobile ? (
-        <Drawer open={mobileOpen} onClose={() => setMobileOpen(false)} sx={{ '& .MuiDrawer-paper': { width: DRAWER_WIDTH } }}>
-          {drawerContent}
-        </Drawer>
-      ) : (
-        <Drawer variant="permanent" sx={{ width: DRAWER_WIDTH, '& .MuiDrawer-paper': { width: DRAWER_WIDTH, border: 'none', boxShadow: '2px 0 12px rgba(0,0,0,0.04)' } }}>
-          {drawerContent}
-        </Drawer>
+    <div className="flex min-h-screen bg-fresha-light font-sans">
+      {/* Mobile Sidebar Overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
       )}
 
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {isMobile && (
-          <AppBar position="sticky" sx={{ background: '#fff', boxShadow: '0 1px 6px rgba(0,0,0,0.05)' }}>
-            <Toolbar>
-              <IconButton onClick={() => setMobileOpen(true)} sx={{ mr: 2 }}><MenuIcon /></IconButton>
-              <Typography variant="h6" sx={{ fontFamily: '"Playfair Display", serif', color: 'secondary.main' }}>Beauté Admin</Typography>
-            </Toolbar>
-          </AppBar>
-        )}
-        <Box sx={{ flex: 1, p: { xs: 2, md: 4 } }}>
-          <Outlet />
-        </Box>
-      </Box>
-    </Box>
+      {/* Sidebar */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:block ${mobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
+      >
+        <div className="flex flex-col h-full bg-white border-r border-gray-200">
+          <div className="p-6 border-b border-gray-100 flex items-center gap-3">
+            <img
+              src="https://res.cloudinary.com/dme0dknht/image/upload/v1773429355/photo_2026-03-13_21-15-02_qtgk9r.jpg"
+              alt="Avatar"
+              className="w-10 h-10 rounded-full object-cover border-2 border-fresha-dark/10 shadow-sm"
+            />
+            <span className="text-xl font-serif font-bold text-fresha-dark">
+              {t("nav.admin", "Piatkivska Brow Artist Admin")}
+            </span>
+          </div>
+
+          <div className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center gap-3 px-3 py-3 rounded-lg font-medium transition-colors ${isActive ? "bg-gray-100 text-fresha-dark" : "text-gray-600 hover:bg-gray-50 hover:text-fresha-dark"}`}
+                >
+                  {item.icon}
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="p-4 border-t border-gray-100">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2 w-full text-left rounded-lg font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+              {t("admin.nav.logout", "Log out")}
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        {/* Mobile Header */}
+        <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 lg:hidden">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 -ml-2 text-gray-600 rounded-lg hover:bg-gray-100"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+            <span className="font-serif font-bold text-fresha-dark text-lg">
+              Piatkivska Brow Artist
+            </span>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+          <div className="max-w-6xl mx-auto h-full animate-in fade-in duration-500">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
   );
 }

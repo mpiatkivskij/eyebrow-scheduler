@@ -34,7 +34,7 @@ module Api
         end
 
         def gallery_params
-          params.require(:gallery_item).permit(:image_url, :description_uk, :description_en, :sort_order, :category)
+          params.require(:gallery_item).permit(:image_url, :description_uk, :description_en, :sort_order, :category, :media_type)
         end
       end
     end

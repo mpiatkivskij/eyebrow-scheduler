@@ -1,5 +1,6 @@
 class Service < ApplicationRecord
-  has_many :appointments, dependent: :restrict_with_error
+  has_many :appointment_services, dependent: :destroy
+  has_many :appointments, through: :appointment_services
 
   validates :name_uk, :name_en, :price, :duration_minutes, presence: true
   validates :price, numericality: { greater_than: 0 }

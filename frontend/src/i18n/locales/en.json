@@ -1,4 +1,9 @@
 {
+  "common": {
+    "error": "Something went wrong",
+    "copy": "Click to copy",
+    "location": "Location"
+  },
   "nav": {
     "home": "Home",
     "portfolio": "Portfolio",
@@ -8,6 +13,8 @@
   "hero": {
     "title": "Reveal Your Natural Beauty",
     "subtitle": "Premium eyebrow, eyelash & facial treatments crafted with precision and care",
+    "artistName": "TETYANA PIATKIVSKA",
+    "artistTitle": "BROW ARTIST AND STYLIST",
     "cta": "Book Appointment",
     "explore": "View Portfolio"
   },
@@ -15,6 +22,7 @@
     "title": "Our Services",
     "subtitle": "Expertly crafted beauty treatments for brows, eyelashes, and face",
     "duration": "{{minutes}} min",
+    "durationSuffix": "min",
     "bookNow": "Book Now",
     "categories": {
       "all": "All",
@@ -42,12 +50,36 @@
     "noSlots": "No available slots for this date",
     "closedDay": "Salon is closed on this day",
     "name": "Full Name",
+    "namePlaceholder": "John Doe",
     "phone": "Phone Number",
+    "phonePlaceholder": "+380 50 123 4567",
     "email": "Email (optional)",
+    "emailPlaceholder": "you@example.com",
     "notes": "Additional notes (optional)",
+    "notesPlaceholder": "Any special requests?",
     "submit": "Confirm Booking",
     "back": "Back",
     "next": "Next",
+    "continue": "Continue",
+    "confirm": "Confirm Booking",
+    "clientDetails": "Client Details",
+    "summary": "Booking Summary",
+    "totalToPay": "Total To Pay",
+    "payAtVenue": "Pay at venue",
+    "at": "at",
+    "multipleServices": "{{count}} services",
+    "noSlotsCombined": "No available time for all selected services together",
+    "splitSuggestion": "Try selecting fewer services or booking them separately.",
+    "backToServices": "Back to Services",
+    "closedDay": "We are closed on this day",
+    "closedDayHint": "Please choose another date",
+    "noSlotsAvailable": "No available time on this date",
+    "noSlotsHint": "All time slots are booked. Try selecting a different date or fewer services.",
+    "periods": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening"
+    },
     "success": {
       "title": "Booking Confirmed!",
       "message": "Thank you, {{name}}! Your appointment has been scheduled.",
@@ -57,8 +89,11 @@
   },
   "footer": {
     "rights": "All rights reserved",
-    "address": "Kyiv, Ukraine",
-    "tagline": "Beauty is an art. We are the artists."
+    "brand_name": "Tetiana Piatkivska",
+    "address": "Odesa, 'Park Fontaniv' RC",
+    "tagline": "Beauty is an art. We are the artists.",
+    "name": "Tetiana Piatkivska",
+    "copied": "Copied!"
   },
   "admin": {
     "login": {
@@ -66,15 +101,27 @@
       "email": "Email",
       "password": "Password",
       "submit": "Sign In",
-      "error": "Invalid credentials"
+      "error": "Invalid credentials",
+      "welcome": "Welcome back",
+      "tagline": "Tetiana Piatkivska"
     },
     "nav": {
       "dashboard": "Dashboard",
       "services": "Services",
       "appointments": "Appointments",
+      "scheduler": "Scheduler",
       "schedule": "Schedule",
       "gallery": "Gallery",
       "logout": "Logout"
+    },
+    "scheduler": {
+      "title": "Scheduler",
+      "day": "Day",
+      "week": "Week",
+      "month": "Month",
+      "today": "Today",
+      "more": "more",
+      "notes": "Notes"
     },
     "dashboard": {
       "title": "Dashboard",
@@ -84,8 +131,10 @@
       "weekRevenue": "Week Revenue",
       "monthRevenue": "Month Revenue",
       "upcoming": "Upcoming Appointments",
-      "pending": "Pending",
-      "totalServices": "Services"
+      "pending": "Pending Action",
+      "totalServices": "Services",
+      "error": "Error loading dashboard",
+      "noUpcoming": "No upcoming appointments"
     },
     "services": {
       "title": "Manage Services",
@@ -93,31 +142,81 @@
       "edit": "Edit Service",
       "delete": "Delete",
       "nameEn": "Name (English)",
+      "nameEnPlaceholder": "E.g. Powder Brows",
       "nameUk": "Name (Ukrainian)",
+      "nameUkPlaceholder": "E.g. Пудрові брови",
       "descEn": "Description (English)",
       "descUk": "Description (Ukrainian)",
       "price": "Price",
       "duration": "Duration (min)",
       "category": "Category",
-      "active": "Active",
+      "active": "Status",
+      "activeLabel": "Active",
+      "inactiveLabel": "Inactive",
+      "activeStatusLabel": "Service is Active",
       "save": "Save",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "deleteConfirm": "Are you sure you want to delete this service?"
     },
     "appointments": {
       "title": "Appointments",
       "client": "Client",
       "phone": "Phone",
+      "email": "Email",
       "service": "Service",
+      "services": "Services",
       "date": "Date",
       "time": "Time",
       "status": "Status",
       "actions": "Actions",
+      "notes": "Notes",
       "statuses": {
         "pending": "Pending",
         "confirmed": "Confirmed",
         "cancelled": "Cancelled",
         "completed": "Completed"
-      }
+      },
+      "allStatuses": "All Statuses",
+      "noAppointments": "No appointments found.",
+      "confirmTitle": "Confirm",
+      "cancelTitle": "Cancel",
+      "completeTitle": "Complete",
+      "editTitle": "Edit",
+      "add": "Add Appointment",
+      "editAppointment": "Edit Appointment",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this appointment?",
+      "customDuration": "Custom Duration (min)",
+      "customDurationHint": "Leave empty to auto-calculate from services",
+      "customPrice": "Custom Price (₴)",
+      "customPriceHint": "Leave empty for default price",
+      "totalDuration": "Duration",
+      "totalPrice": "Price",
+      "viewList": "List",
+      "viewCards": "Cards",
+      "viewCalendar": "Calendar",
+      "availableSlots": "Available Slots",
+      "addTimeOff": "Add Time Off",
+      "editTimeOff": "Edit Time Off",
+      "timeOff": "Time off",
+      "timeOffName": "Title",
+      "timeOffDefaultName": "Non-working time",
+      "endTime": "End time"
+    },
+    "holidays": {
+      "holiday": "Holiday",
+      "addHoliday": "Add Holiday",
+      "dateFrom": "From",
+      "dateTo": "To",
+      "description": "Description",
+      "descriptionPlaceholder": "e.g. Vacation, National holiday...",
+      "daysCount": "{{count}} day(s) will be marked as holiday",
+      "daysCountTime": "{{count}} day(s), {{from}} — {{to}}",
+      "fullDay": "Full day",
+      "startTime": "Start time",
+      "endTime": "End time",
+      "timeOff": "Time off",
+      "deleteConfirm": "Delete this holiday?"
     },
     "schedule": {
       "title": "Work Schedule",
@@ -127,6 +226,11 @@
       "breaks": "Breaks",
       "addBreak": "Add Break",
       "save": "Save Schedule",
+      "success": "Schedule saved successfully!",
+      "noBreaks": "No breaks scheduled.",
+      "closedOn": "Closed on {{day}}s",
+      "open": "Open",
+      "closed": "Closed",
       "days": {
         "0": "Sunday",
         "1": "Monday",
@@ -139,14 +243,24 @@
     },
     "gallery": {
       "title": "Gallery Management",
-      "add": "Add Image",
-      "imageUrl": "Image URL",
+      "add": "Add Media",
+      "imageUrl": "Media URL",
+      "imageUrlPlaceholder": "https://...",
+      "mediaType": "Media Type",
+      "photo": "Photo",
+      "video": "Video",
       "descEn": "Description (English)",
       "descUk": "Description (Ukrainian)",
       "category": "Category",
       "sortOrder": "Sort Order",
       "save": "Save",
-      "delete": "Delete"
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete this media item?",
+      "noImages": "No items yet",
+      "addFirst": "Add your first photo or video to showcase your portfolio.",
+      "noDescription": "No description provided",
+      "order": "Order"
     }
   }
 }

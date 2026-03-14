@@ -1,20 +1,26 @@
 {
+  "common": {
+    "error": "Щось пішло не так",
+    "copy": "Натисніть, щоб скопіювати",
+    "location": "Локація"
+  },
   "nav": {
     "home": "Головна",
-    "portfolio": "Портфоліо",
+    "portfolio": "Мої роботи",
     "booking": "Записатися",
-    "admin": "Адмін"
+    "admin": "Пʼятківська"
   },
   "hero": {
-    "title": "Розкрийте Вашу Природну Красу",
-    "subtitle": "Преміальні процедури для брів, вій та обличчя, виконані з точністю та турботою",
+    "title": "Підкресліть свою природну красу",
+    "subtitle": "Професійні процедури краси для брів, вій та обличчя",
     "cta": "Записатися",
-    "explore": "Портфоліо"
+    "explore": "Мої роботи"
   },
   "services": {
     "title": "Наші Послуги",
     "subtitle": "Професійні процедури краси для брів, вій та обличчя",
     "duration": "{{minutes}} хв",
+    "durationSuffix": "хв",
     "bookNow": "Записатися",
     "categories": {
       "all": "Усі",
@@ -24,7 +30,7 @@
     }
   },
   "portfolio": {
-    "title": "Наше Портфоліо",
+    "title": "Мої роботи",
     "subtitle": "Погляньте на мистецтво кожної процедури"
   },
   "booking": {
@@ -42,23 +48,50 @@
     "noSlots": "Немає вільних місць на цю дату",
     "closedDay": "Салон зачинений в цей день",
     "name": "Повне ім'я",
+    "namePlaceholder": "Іван Іванов",
     "phone": "Номер телефону",
+    "phonePlaceholder": "+380 50 123 4567",
     "email": "Email (необов'язково)",
+    "emailPlaceholder": "your@email.com",
     "notes": "Додаткові примітки (необов'язково)",
+    "notesPlaceholder": "Будь-які особливі побажання?",
     "submit": "Підтвердити запис",
     "back": "Назад",
     "next": "Далі",
+    "continue": "Продовжити",
+    "confirm": "Підтвердити запис",
+    "clientDetails": "Дані клієнта",
+    "summary": "Підсумок запису",
+    "totalToPay": "До сплати",
+    "payAtVenue": "Оплата на місці",
+    "at": "о",
+    "multipleServices": "{{count}} процедури",
+    "noSlotsCombined": "Немає вільного часу для всіх процедур разом",
+    "splitSuggestion": "Спробуйте вибрати менше послуг або записатися на них окремо.",
+    "backToServices": "Повернутися до вибору",
+    "closedDay": "В цей день відпочиваю",
+    "closedDayHint": "Будь ласка, оберіть іншу дату",
+    "noSlotsAvailable": "На цю дату немає вільного часу",
+    "noSlotsHint": "Усі часові слоти зайняті. Спробуйте обрати іншу дату або менше послуг.",
+    "periods": {
+      "morning": "Ранок",
+      "afternoon": "День",
+      "evening": "Вечір"
+    },
     "success": {
-      "title": "Запис Підтверджено!",
-      "message": "Дякуємо, {{name}}! Ваш запис оформлено.",
+      "title": "{{name}}, Ви чарівні!",
+      "message": "Дякуємо, Ваш запис оформлено. Очікуйте на дзвінок для підтвердження.",
       "details": "Чекаємо на Вас {{date}} о {{time}}.",
       "home": "На головну"
     }
   },
   "footer": {
     "rights": "Усі права захищені",
-    "address": "Київ, Україна",
-    "tagline": "Краса — це мистецтво. Ми — митці."
+    "brand_name": "Тетяна П'ятківська",
+    "address": "Одеса, ЖК \"Парк Фонтанів\"",
+    "tagline": "Краса - це мистецтво. Ми - митці.",
+    "name": "Тетяна П'ятківська",
+    "copied": "Скопійовано!"
   },
   "admin": {
     "login": {
@@ -66,15 +99,27 @@
       "email": "Email",
       "password": "Пароль",
       "submit": "Увійти",
-      "error": "Невірні дані"
+      "error": "Невірні дані",
+      "welcome": "З поверненням",
+      "tagline": "Tetiana Piatkivska"
     },
     "nav": {
       "dashboard": "Панель",
       "services": "Послуги",
       "appointments": "Записи",
+      "scheduler": "Планувальник",
       "schedule": "Розклад",
       "gallery": "Галерея",
       "logout": "Вийти"
+    },
+    "scheduler": {
+      "title": "Планувальник",
+      "day": "День",
+      "week": "Тиждень",
+      "month": "Місяць",
+      "today": "Сьогодні",
+      "more": "ще",
+      "notes": "Нотатки"
     },
     "dashboard": {
       "title": "Панель керування",
@@ -84,8 +129,10 @@
       "weekRevenue": "Дохід за тиждень",
       "monthRevenue": "Дохід за місяць",
       "upcoming": "Найближчі записи",
-      "pending": "Очікують",
-      "totalServices": "Послуги"
+      "pending": "Очікують дії",
+      "totalServices": "Послуги",
+      "error": "Помилка завантаження панелі",
+      "noUpcoming": "Найближчих записів немає"
     },
     "services": {
       "title": "Керування послугами",
@@ -93,31 +140,81 @@
       "edit": "Редагувати послугу",
       "delete": "Видалити",
       "nameEn": "Назва (англійська)",
+      "nameEnPlaceholder": "Напр. Powder Brows",
       "nameUk": "Назва (українська)",
+      "nameUkPlaceholder": "Напр. Пудрові брови",
       "descEn": "Опис (англійська)",
       "descUk": "Опис (українська)",
       "price": "Ціна",
       "duration": "Тривалість (хв)",
       "category": "Категорія",
-      "active": "Активна",
+      "active": "Статус",
+      "activeLabel": "Активна",
+      "inactiveLabel": "Неактивна",
+      "activeStatusLabel": "Послуга активна",
       "save": "Зберегти",
-      "cancel": "Скасувати"
+      "cancel": "Скасувати",
+      "deleteConfirm": "Ви впевнені, що хочете видалити цю послугу?"
     },
     "appointments": {
       "title": "Записи",
       "client": "Клієнт",
       "phone": "Телефон",
+      "email": "Email",
       "service": "Послуга",
+      "services": "Послуги",
       "date": "Дата",
       "time": "Час",
       "status": "Статус",
       "actions": "Дії",
+      "notes": "Нотатки",
       "statuses": {
         "pending": "Очікує",
         "confirmed": "Підтверджено",
         "cancelled": "Скасовано",
         "completed": "Завершено"
-      }
+      },
+      "allStatuses": "Всі статуси",
+      "noAppointments": "Записів не знайдено.",
+      "confirmTitle": "Підтвердити",
+      "cancelTitle": "Скасувати",
+      "completeTitle": "Завершити",
+      "editTitle": "Редагувати",
+      "add": "Додати запис",
+      "editAppointment": "Редагування запису",
+      "delete": "Видалити",
+      "deleteConfirm": "Ви впевнені, що хочете видалити цей запис?",
+      "customDuration": "Кастомна тривалість (хв)",
+      "customDurationHint": "Залиште пустим для автоматичного розрахунку",
+      "customPrice": "Кастомна ціна (₴)",
+      "customPriceHint": "Залиште пустим для ціни за замовчуванням",
+      "totalDuration": "Тривалість",
+      "totalPrice": "Ціна",
+      "viewList": "Список",
+      "viewCards": "Картки",
+      "viewCalendar": "Календар",
+      "availableSlots": "Вільні слоти",
+      "addTimeOff": "Додати неробочий час",
+      "editTimeOff": "Редагування неробочого часу",
+      "timeOff": "Не працюю",
+      "timeOffName": "Назва",
+      "timeOffDefaultName": "Неробочий час",
+      "endTime": "Час закінчення"
+    },
+    "holidays": {
+      "holiday": "Відпустка",
+      "addHoliday": "Додати відпустку",
+      "dateFrom": "З",
+      "dateTo": "По",
+      "description": "Опис",
+      "descriptionPlaceholder": "напр. Відпустка, Державне свято...",
+      "daysCount": "{{count}} день/днів буде позначено як вихідний",
+      "daysCountTime": "{{count}} день/днів, {{from}} — {{to}}",
+      "fullDay": "Повний день",
+      "startTime": "Початок",
+      "endTime": "Кінець",
+      "timeOff": "Неробочий час",
+      "deleteConfirm": "Видалити цей вихідний?"
     },
     "schedule": {
       "title": "Робочий розклад",
@@ -127,6 +224,11 @@
       "breaks": "Перерви",
       "addBreak": "Додати перерву",
       "save": "Зберегти розклад",
+      "success": "Розклад успішно збережено!",
+      "noBreaks": "Перерв не заплановано.",
+      "closedOn": "Зачинено у {{day}}",
+      "open": "Відчинено",
+      "closed": "Зачинено",
       "days": {
         "0": "Неділя",
         "1": "Понеділок",
@@ -139,14 +241,24 @@
     },
     "gallery": {
       "title": "Керування галереєю",
-      "add": "Додати зображення",
-      "imageUrl": "URL зображення",
+      "add": "Додати медіа",
+      "imageUrl": "URL медіафайлу",
+      "imageUrlPlaceholder": "https://...",
+      "mediaType": "Тип медіа",
+      "photo": "Фото",
+      "video": "Відео",
       "descEn": "Опис (англійська)",
       "descUk": "Опис (українська)",
       "category": "Категорія",
       "sortOrder": "Порядок сортування",
       "save": "Зберегти",
-      "delete": "Видалити"
+      "cancel": "Скасувати",
+      "delete": "Видалити",
+      "deleteConfirm": "Ви впевнені, що хочете видалити цей медіафайл?",
+      "noImages": "Медіафайлів ще немає",
+      "addFirst": "Додайте перше фото або відео, щоб продемонструвати своє портфоліо.",
+      "noDescription": "Опис відсутній",
+      "order": "Порядок"
     }
   }
 }

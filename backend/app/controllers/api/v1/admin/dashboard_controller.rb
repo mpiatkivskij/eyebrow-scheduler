@@ -18,21 +18,27 @@ module Api
           month_appointments = Appointment.where(start_time: month_start.beginning_of_day..month_end.end_of_day)
                                           .where.not(status: :cancelled)
 
-          upcoming = Appointment.includes(:service)
+          upcoming = Appointment.includes(:services)
                                 .where('start_time > ?', Time.current)
                                 .where.not(status: :cancelled)
                                 .order(start_time: :asc)
                                 .limit(10)
 
+          pending = Appointment.includes(:services)
+                               .pending
+                               .where('start_time > ?', Time.current)
+                               .order(start_time: :asc)
+
           render json: {
             today_count: today_appointments.count,
             week_count: week_appointments.count,
             month_count: month_appointments.count,
-            week_revenue: week_appointments.joins(:service).sum('services.price'),
-            month_revenue: month_appointments.joins(:service).sum('services.price'),
-            upcoming_appointments: upcoming.as_json(include: :service),
+            week_revenue: week_appointments.joins(:services).sum('services.price'),
+            month_revenue: month_appointments.joins(:services).sum('services.price'),
+            upcoming_appointments: upcoming.as_json(include: :services),
+            pending_appointments: pending.as_json(include: :services),
             total_services: Service.active.count,
-            pending_count: Appointment.pending.where('start_time > ?', Time.current).count
+            pending_count: pending.count
           }
         end
       end

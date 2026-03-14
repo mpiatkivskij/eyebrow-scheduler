@@ -1,10 +1,13 @@
 class Appointment < ApplicationRecord
-  belongs_to :service
+  has_many :appointment_services, dependent: :destroy
+  has_many :services, through: :appointment_services
 
   enum :status, { pending: 0, confirmed: 1, cancelled: 2, completed: 3 }
 
-  validates :client_name, :client_phone, :start_time, :end_time, presence: true
-  validates :client_phone, format: { with: /\A[\d\s\+\-\(\)]+\z/ }
+  validates :client_name, :start_time, :end_time, presence: true
+  validates :client_phone, presence: true, unless: :is_time_off
+  validates :services, presence: true, unless: :is_time_off
+  validates :client_phone, format: { with: /\A[\d\s\+\-\(\)]+\z/ }, unless: :is_time_off
   validate :end_time_after_start_time
   validate :no_overlapping_appointments, on: :create
 
@@ -16,7 +19,7 @@ class Appointment < ApplicationRecord
 
   def end_time_after_start_time
     return unless start_time && end_time
-    errors.add(:end_time, "must be after start time") if end_time <= start_time
+    errors.add(:end_time, :must_be_after_start) if end_time <= start_time
   end
 
   def no_overlapping_appointments
@@ -24,6 +27,6 @@ class Appointment < ApplicationRecord
     overlapping = Appointment.where.not(status: :cancelled)
       .where('start_time < ? AND end_time > ?', end_time, start_time)
     overlapping = overlapping.where.not(id: id) if persisted?
-    errors.add(:base, "Time slot is already booked") if overlapping.exists?
+    errors.add(:base, :time_slot_booked) if overlapping.exists?
   end
 end

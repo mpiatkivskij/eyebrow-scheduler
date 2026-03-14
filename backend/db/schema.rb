@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_11_213361) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_13_221428) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,11 +22,19 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_11_213361) do
     t.index ["email"], name: "index_admin_users_on_email", unique: true
   end
 
+  create_table "appointment_services", force: :cascade do |t|
+    t.bigint "appointment_id", null: false
+    t.bigint "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_appointment_services_on_appointment_id"
+    t.index ["service_id"], name: "index_appointment_services_on_service_id"
+  end
+
   create_table "appointments", force: :cascade do |t|
     t.string "client_name", null: false
-    t.string "client_phone", null: false
+    t.string "client_phone"
     t.string "client_email"
-    t.bigint "service_id", null: false
     t.datetime "start_time", null: false
     t.datetime "end_time", null: false
     t.integer "status", default: 0, null: false
@@ -34,7 +42,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_11_213361) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["service_id"], name: "index_appointments_on_service_id"
+    t.decimal "custom_price", precision: 8, scale: 2
+    t.integer "custom_duration"
+    t.boolean "is_time_off", default: false, null: false
     t.index ["start_time"], name: "index_appointments_on_start_time"
     t.index ["status"], name: "index_appointments_on_status"
   end
@@ -47,6 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_11_213361) do
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "media_type"
   end
 
   create_table "holidays", force: :cascade do |t|
@@ -54,6 +65,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_11_213361) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.time "start_time"
+    t.time "end_time"
   end
 
   create_table "schedule_breaks", force: :cascade do |t|
@@ -88,6 +101,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_11_213361) do
     t.index ["day_of_week"], name: "index_work_schedules_on_day_of_week", unique: true
   end
 
-  add_foreign_key "appointments", "services"
+  add_foreign_key "appointment_services", "appointments"
+  add_foreign_key "appointment_services", "services"
   add_foreign_key "schedule_breaks", "work_schedules"
 end

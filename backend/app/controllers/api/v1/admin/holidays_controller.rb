@@ -26,7 +26,7 @@ module Api
         private
 
         def holiday_params
-          params.require(:holiday).permit(:date, :description)
+          params.require(:holiday).permit(:date, :description, :start_time, :end_time)
         end
       end
     end

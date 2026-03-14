@@ -1,5 +1,12 @@
 class ApplicationController < ActionController::API
+  before_action :set_locale
+
   private
+
+  def set_locale
+    lang = request.headers['Accept-Language'].to_s.split(',').first.to_s.strip
+    I18n.locale = lang.start_with?('uk') ? :uk : :en
+  end
 
   def authenticate_admin!
     token = request.headers['Authorization']&.split(' ')&.last
