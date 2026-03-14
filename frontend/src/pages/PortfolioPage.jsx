@@ -51,6 +51,8 @@ export default function PortfolioPage() {
                     className="w-full h-auto object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
                     muted
                     loop
+                    playsInline
+                    preload="metadata"
                     onMouseOver={(e) => e.target.play()}
                     onMouseOut={(e) => {
                       e.target.pause();

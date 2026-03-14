@@ -60,7 +60,7 @@ export default function Header() {
               alt="Logo"
               className="w-6 h-6 sm:w-8 sm:h-8 object-contain flex-shrink-0"
             />
-            <span className="text-fresha-dark font-serif text-sm sm:text-lg whitespace-nowrap truncate">
+            <span className="text-fresha-dark font-serif text-sm sm:text-lg whitespace-nowrap">
               Piatkivska Brow Artist
             </span>
           </Link>
@@ -85,7 +85,7 @@ export default function Header() {
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem>
+        <NavbarItem className="hidden sm:flex">
           <Dropdown>
             <DropdownTrigger>
               <Button

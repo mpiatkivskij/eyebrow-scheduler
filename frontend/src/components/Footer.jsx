@@ -11,10 +11,11 @@ import {
 } from "@heroui/react";
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const year = new Date().getFullYear();
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [copied, setCopied] = useState(false);
+  const currentLang = i18n.language?.startsWith("uk") ? "uk" : "en";
 
   const phone = "+380 (96) 034 45 36";
   const avatarUrl =
@@ -149,7 +150,26 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-8 pt-6 text-center">
+        <div className="border-t border-white/10 mt-8 pt-6 flex flex-col items-center gap-4">
+          {/* Language switcher - mobile only */}
+          <div className="flex sm:hidden gap-3">
+            <Button
+              size="sm"
+              variant={currentLang === "uk" ? "solid" : "bordered"}
+              className={`rounded-lg font-bold min-w-[60px] ${currentLang === "uk" ? "bg-white text-fresha-dark" : "border-white/20 text-gray-400"}`}
+              onPress={() => i18n.changeLanguage("uk")}
+            >
+              UA
+            </Button>
+            <Button
+              size="sm"
+              variant={currentLang === "en" ? "solid" : "bordered"}
+              className={`rounded-lg font-bold min-w-[60px] ${currentLang === "en" ? "bg-white text-fresha-dark" : "border-white/20 text-gray-400"}`}
+              onPress={() => i18n.changeLanguage("en")}
+            >
+              EN
+            </Button>
+          </div>
           <p className="text-[10px] text-gray-500 tracking-widest uppercase">
             © {year} PIATKIVSKA BROW ARTIST.{" "}
             {t("footer.rights", "All rights reserved.")}
