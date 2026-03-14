@@ -45,7 +45,7 @@ module Backend
     config.i18n.default_locale = :en
 
     # Telegram bot notifications
-    config.telegram_token = ENV.fetch("TELEGRAM_TOKEN", "8566920987:AAGEEpcEwly6NMrpzQC0W90iwDleLL40Q4c")
-    config.telegram_chat_id = ENV.fetch("TELEGRAM_CHAT_ID", "569095287")
+    config.telegram_token = ENV.fetch("TELEGRAM_TOKEN")
+    config.telegram_chat_id = ENV.fetch("TELEGRAM_CHAT_ID")
   end
 end
