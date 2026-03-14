@@ -479,21 +479,6 @@ export default function BookingPage() {
                     "bg-gray-50 border-gray-200 hover:border-gray-300 focus-within:border-fresha-dark focus-within:ring-1 focus-within:ring-fresha-dark",
                 }}
               />
-              <Input
-                label={t("booking.email", "Email (Optional)")}
-                type="email"
-                placeholder={t("booking.emailPlaceholder", "you@example.com")}
-                value={formData.client_email}
-                onValueChange={(val) =>
-                  setFormData({ ...formData, client_email: val })
-                }
-                variant="faded"
-                labelPlacement="outside"
-                classNames={{
-                  inputWrapper:
-                    "bg-gray-50 border-gray-200 hover:border-gray-300 focus-within:border-fresha-dark focus-within:ring-1 focus-within:ring-fresha-dark",
-                }}
-              />
               <Textarea
                 label={t("booking.notes", "Notes")}
                 placeholder={t(
