@@ -51,7 +51,6 @@
     "selectDate": "Pick a date",
     "selectTime": "Choose a time slot",
     "noSlots": "No available slots for this date",
-    "closedDay": "Salon is closed on this day",
     "name": "Full Name",
     "namePlaceholder": "John Doe",
     "phone": "Phone Number",
