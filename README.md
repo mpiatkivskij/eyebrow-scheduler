@@ -2,6 +2,36 @@
 
 Веб-додаток для онлайн-запису на процедури перманентного макіяжу. Складається з React фронтенду та Rails API бекенду.
 
+![Головна сторінка](docs/screenshots/home.jpg)
+
+## Скріншоти
+
+> Скріни зроблені на демо-даних; імена та контакти клієнтів розмиті.
+
+### Сайт для клієнтів
+
+| Мої роботи | Вибір послуги |
+|---|---|
+| ![Портфоліо](docs/screenshots/portfolio.jpg) | ![Вибір послуги](docs/screenshots/booking-service.png) |
+| **Дата та час** | **Дані клієнта** |
+| ![Вибір часу](docs/screenshots/booking-time.png) | ![Дані клієнта](docs/screenshots/booking-details.png) |
+
+### Адмін-панель
+
+| Панель керування | Записи |
+|---|---|
+| ![Панель керування](docs/screenshots/admin-dashboard.png) | ![Записи](docs/screenshots/admin-appointments.png) |
+| **Календар** | **Робочий розклад** |
+| ![Календар](docs/screenshots/admin-calendar.png) | ![Робочий розклад](docs/screenshots/admin-schedule.png) |
+| **Послуги** | |
+| ![Послуги](docs/screenshots/admin-services.png) | |
+
+### Мобільна версія
+
+| Головна | Запис | Панель | Записи |
+|---|---|---|---|
+| ![Мобільна головна](docs/screenshots/mobile-home.jpg) | ![Мобільний запис](docs/screenshots/mobile-booking.png) | ![Мобільна панель](docs/screenshots/mobile-admin-dashboard.png) | ![Мобільні записи](docs/screenshots/mobile-admin-appointments.png) |
+
 ## Стек технологій
 
 | Компонент | Технологія |
