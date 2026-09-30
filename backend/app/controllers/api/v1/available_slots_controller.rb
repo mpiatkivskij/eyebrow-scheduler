@@ -44,13 +44,13 @@ module Api
         available = slots.reject do |slot_start, slot_end|
           booked.any? { |bs, be| slot_start < be && slot_end > bs } ||
             breaks.any? do |br_start, br_end|
-              br_start_dt = date.to_datetime.change(hour: br_start.hour, min: br_start.min)
-              br_end_dt = date.to_datetime.change(hour: br_end.hour, min: br_end.min)
+              br_start_dt = date.in_time_zone.change(hour: br_start.hour, min: br_start.min)
+              br_end_dt = date.in_time_zone.change(hour: br_end.hour, min: br_end.min)
               slot_start < br_end_dt && slot_end > br_start_dt
             end ||
             partial_holidays.any? do |h_start, h_end|
-              h_start_dt = date.to_datetime.change(hour: h_start.hour, min: h_start.min)
-              h_end_dt = date.to_datetime.change(hour: h_end.hour, min: h_end.min)
+              h_start_dt = date.in_time_zone.change(hour: h_start.hour, min: h_start.min)
+              h_end_dt = date.in_time_zone.change(hour: h_end.hour, min: h_end.min)
               slot_start < h_end_dt && slot_end > h_start_dt
             end
         end
@@ -65,8 +65,8 @@ module Api
 
       def generate_slots(date, schedule, duration)
         slots = []
-        current = date.to_datetime.change(hour: schedule.start_time.hour, min: schedule.start_time.min)
-        day_end = date.to_datetime.change(hour: schedule.end_time.hour, min: schedule.end_time.min)
+        current = date.in_time_zone.change(hour: schedule.start_time.hour, min: schedule.start_time.min)
+        day_end = date.in_time_zone.change(hour: schedule.end_time.hour, min: schedule.end_time.min)
 
         while current + duration.minutes <= day_end
           slot_end = current + duration.minutes
